@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgresDb
+    env_file:
+      - .env.docker
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    
+    restart: always
+
+
+  studio:
+    build:
+      context: .
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    container_name: prisma_studio
+    env_file:
+      - .env.docker
+    ports:
+      - "127.0.0.1:5555:5555"
+    command: npx prisma studio --browser none --port 5555 --hostname 0.0.0.0
+    depends_on:
+      - postgres
+
+  app:
+    build: .
+    container_name: express
+    ports:
+      - "127.0.0.1:${PORT}:${PORT}"
+    env_file:
+      - .env.docker
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes: 
+  postgres_data:
