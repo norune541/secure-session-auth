@@ -4,7 +4,8 @@ import { ApiError } from "../errors/ApiError";
 import type { ErrorRequestHandler } from "express";
 
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
-  console.log(err);
+  console.error(err);
+  let normalize;
   let flattenedZodError;
 
   switch (true) {
@@ -17,10 +18,11 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     case err instanceof ZodError:
       flattenedZodError = z.flattenError(err);
 
-      return res.status(422).json({ error: flattenedZodError });
+      normalize =
+        Object.values(flattenedZodError.fieldErrors).flat()[0] ||
+        flattenedZodError.formErrors[0];
 
-    case err instanceof SyntaxError:
-      return res.status(422).json({ error: "body missing" });
+      return res.status(422).json({ error: normalize });
 
     default:
       return res.status(500).json({ error: "Internal server error" });

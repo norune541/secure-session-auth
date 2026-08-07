@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
+import cors from "cors";
 import { env } from "./config/env";
 import { authRouter } from "./modules/auth/auth.routes";
 import { userRouter } from "./modules/user/user.routes";
@@ -9,6 +10,10 @@ import { errorHandler } from "./shared/middlewares/errorHandler";
 const app = express();
 const PORT = env.PORT;
 
+app.use(cors({
+	origin: "http://localhost:5173",
+	credentials: true
+}))
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
