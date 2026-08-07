@@ -10,7 +10,6 @@ RUN npm ci
 COPY . .
 
 RUN npm run build
-RUN npm run seed
 
 FROM node:20-alpine
 WORKDIR /app
