@@ -6,7 +6,7 @@ import type { MetadataDto } from "./dto/metadata.dto";
  * Validates an opaque refresh token and retrieves the associated session.
  *
  * @description
- * Since the refresh endpoint recieves only an opaque token,
+ * Since the refresh endpoint receives only an opaque token,
  * the returned session id can be used to rotate the refresh token,
  * while the user data is used to issue a new access token.
  *
