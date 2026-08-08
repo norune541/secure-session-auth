@@ -55,11 +55,12 @@ export const getUserSessions = async (userId: string) => {
     },
     select: {
       id: true,
+      userId: true,
       ip: true,
       userAgent: true,
+      revoked: true,
       createdAt: true,
       expiresAt: true,
-      revoked: true,
     },
   });
 };
@@ -81,10 +82,10 @@ export const create = async (
   });
 };
 
-export const update = async (id: string, hash: string) => {
+export const update = async (sessionId: string, hash: string) => {
   await prisma.session.update({
     where: {
-      id: id,
+      id: sessionId,
     },
     data: {
       refreshToken: hash,
@@ -92,11 +93,44 @@ export const update = async (id: string, hash: string) => {
   });
 };
 
-export const revoke = async (token: string) => {
-  const hash = crypto.createHash("sha256").update(token).digest("hex");
+/**
+ * Revoke the current refresh session by token.
+ *
+ * @description
+ * This is used for logout flows where the client presents
+ * an opaque refresh token and the corresponding session should
+ * be marked revoked so it can no longer be used.
+ *
+ * @param token - Raw refresh token received from the client.
+ * @returns A promise that resolves when the session has been revoked.
+ */
+export const revokeCurrentSession = async (token: string) => {
+  const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
   await prisma.session.updateMany({
     where: {
-      refreshToken: hash,
+      refreshToken: tokenHash,
+    },
+    data: {
+      revoked: true,
+    },
+  });
+};
+
+/**
+ * Revoke a specific session belonging to a user.
+ *
+ * @description
+ * Used to invalidate a session by its id for the given user,
+ * such as when an admin or the user itself removes a device session.
+ *
+ * @param sessionId - The id of the current session.
+ * @returns A promise that resolves once the session has been revoked.
+ */
+export const revokeSession = async (sessionId: string) => {
+  await prisma.session.updateMany({
+    where: {
+      id: sessionId,
     },
     data: {
       revoked: true,
