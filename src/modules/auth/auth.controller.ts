@@ -1,6 +1,7 @@
 import { LoginSchema } from "./dto/login.dto";
 import { MetadataSchema } from "./dto/metadata.dto";
 import { TokenSchema } from "./dto/token.dto";
+import { uuidSchema } from "./dto/uuid.dto";
 import * as authService from "./auth.service";
 import * as sessionsService from "./session.service";
 import { env } from "../../config/env";
@@ -34,7 +35,7 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   const rawToken = req.cookies?.refreshToken;
   const parsedToken = TokenSchema.parse(rawToken);
-  await sessionsService.revoke(parsedToken);
+  await sessionsService.revokeCurrentSession(parsedToken);
 
   res.clearCookie("refreshToken", {
     path: "/",
@@ -67,4 +68,13 @@ export const getAllUserSessions = async (req: Request, res: Response) => {
   const sessions = await sessionsService.getUserSessions(req.user.id);
 
   return res.status(200).json(sessions);
+};
+
+export const revokeSession = async (req: Request, res: Response) => {
+  const rawSessionId = req.params.sessionId;
+  const sessionId = uuidSchema.parse(rawSessionId);
+
+  await sessionsService.revokeSession(sessionId);
+
+  return res.sendStatus(204);
 };
