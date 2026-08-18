@@ -1,3 +1,4 @@
+import { UAParser } from "ua-parser-js";
 import { LoginSchema } from "./dto/login.dto";
 import { MetadataSchema } from "./dto/metadata.dto";
 import { TokenSchema } from "./dto/token.dto";
@@ -8,9 +9,11 @@ import { env } from "../../config/env";
 import type { Request, Response } from "express";
 
 export const login = async (req: Request, res: Response) => {
+  const ua = UAParser(req.headers["user-agent"]);
+
   const rawMetadata = {
     ip: req.ip,
-    userAgent: req.headers["user-agent"],
+    device: ua.os.name,
   };
 
   const parsedBody = LoginSchema.parse(req.body);
@@ -22,7 +25,7 @@ export const login = async (req: Request, res: Response) => {
   );
 
   res.cookie("refreshToken", refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    maxAge: parsedBody.rememberMe ? 30 * 24 * 60 * 60 * 1000 : undefined,
     sameSite: "strict",
     httpOnly: true,
     secure: env.NODE_ENV === "production",
