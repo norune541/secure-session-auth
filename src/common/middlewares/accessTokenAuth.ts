@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import type { Request, Response, NextFunction } from "express";
 import { ApiError } from "../errors/ApiError";
 import { env } from "../../config/env";
-import type { payload } from "../types/jwt";
+import type { Request, Response, NextFunction } from "express";
+import type { TokenPayload } from "../types/TokenPayload";
 
 export const accessTokenAuth = (
   req: Request,
@@ -17,11 +17,12 @@ export const accessTokenAuth = (
 
   const accessToken = authHeader.split(" ")[1];
 
-  const ok = jwt.verify(accessToken!, env.ACCESS_SECRET) as payload;
+  const ok = jwt.verify(accessToken!, env.ACCESS_SECRET) as TokenPayload;
 
   req.user = {
     id: ok.id,
     role: ok.role,
+    sessionId: ok.sessionId,
   };
 
   next();
