@@ -12,6 +12,7 @@ import type {
   LoginResponse,
   RefreshSessionResponse,
 } from "@repo/types";
+import { ApiError } from "../../common/errors/ApiError";
 
 export const login = async (req: Request, res: Response<LoginResponse>) => {
   const ua = UAParser(req.headers["user-agent"]);
@@ -90,9 +91,18 @@ export const getAllUserSessions = async (
 
 export const revokeSession = async (req: Request, res: Response) => {
   const rawSessionId = req.params.sessionId;
-  const sessionId = uuidSchema.parse(rawSessionId);
+  const rawUserId = req.params.userId;
 
-  await sessionsService.revokeSession(sessionId);
+  const sessionId = uuidSchema.parse(rawSessionId);
+  const userId = uuidSchema.parse(rawUserId);
+
+  const revoked = await sessionsService.revokeSession(sessionId, userId);
+  if (!revoked.count) {
+    throw new ApiError(
+      "You do not have permission to revoke this session",
+      403,
+    );
+  }
 
   return res.sendStatus(204);
 };

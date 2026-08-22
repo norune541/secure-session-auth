@@ -128,12 +128,14 @@ export const revokeCurrentSession = async (token: string) => {
  * such as when an admin or the user itself removes a device session.
  *
  * @param sessionId - The id of the current session.
+ * @param userId - The id of the current user
  * @returns A promise that resolves once the session has been revoked.
  */
-export const revokeSession = async (sessionId: string) => {
-  await prisma.session.updateMany({
+export const revokeSession = async (sessionId: string, userId: string) => {
+  return await prisma.session.updateMany({
     where: {
       id: sessionId,
+      userId: userId,
     },
     data: {
       revoked: true,
