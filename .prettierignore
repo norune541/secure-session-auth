@@ -4,3 +4,4 @@ prisma/
 generated/
 dist/
 compose.yaml
+Dockerfile

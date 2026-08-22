@@ -1,0 +1,49 @@
+{
+  "name": "sessions-backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Ken",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "prisma generate && tsc && tsc-esm-fix && tsc -p tsconfig.seed.json",
+    "seed:dev": "tsx prisma/seed.ts",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "lint": "tsc --noEmit && eslint src"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.5.0",
+    "@prisma/client": "^6.19.3",
+    "@repo/types": "*",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0",
+    "ua-parser-js": "^2.0.10",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.1.1",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "jiti": "^2.7.0",
+    "prettier": "^3.9.5",
+    "prisma": "^6.19.3",
+    "tsc-esm-fix": "^3.1.2",
+    "tsx": "^4.23.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.64.0"
+  }
+}
