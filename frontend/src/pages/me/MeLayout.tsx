@@ -27,7 +27,7 @@ const { Title } = Typography;
 export function MeLayout() {
   const navigate = useNavigate();
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -67,7 +67,6 @@ export function MeLayout() {
         </div>
         <Menu
           mode="inline"
-          defaultSelectedKeys={["user"]}
           onClick={handleMenu}
           items={[
             {
