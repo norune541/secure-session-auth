@@ -29,7 +29,7 @@ sudo docker compose --env-file ./backend/.env.docker build
 4. Start the infrastructure and application:
 
 ```bash
-sudo docker compose --env-file ./backend/.env.docker up
+sudo docker compose up
 ```
 
 5. Run the database seeds (optional):
@@ -41,7 +41,7 @@ sudo docker compose --profile seed run --rm --no-deps seed
 6. Access the services:
 
 - **Frontend:** http://localhost:80
-- **Backend API:** http://localhost:3000
+- **Backend API:** http://localhost:80/api/
 - **Prisma Studio:** http://localhost:5555
 
 Prisma Studio is available locally for database inspection and management.
@@ -69,3 +69,9 @@ npm run frontend:dev
 ```bash
 npm run seed:dev
 ```
+
+4. Access the services:
+
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:3000
+- **Prisma Studio:** http://localhost:5555
