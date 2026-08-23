@@ -23,5 +23,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/pages/.tsx"]
+  "include": ["src", "src/pages/.tsx", "index.d.ts"]
 }

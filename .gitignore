@@ -45,3 +45,5 @@ Thumbs.db
 # Optional Lockfiles / Cache
 .eslintcache
 .npm
+
+*.tsbuildinfo

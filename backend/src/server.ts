@@ -12,7 +12,7 @@ const PORT = env.PORT;
 
 app.use(
   cors({
-    origin: env.NODE_ENV === "development" ? true : "http://localhost:5173",
+    origin: env.NODE_ENV === "development" ? "http://localhost:5173" : false,
     credentials: true,
   }),
 );

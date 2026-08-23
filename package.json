@@ -13,13 +13,14 @@
     "backend:start": "npm run start --workspace=backend",
     "frontend:dev": "npm run dev --workspace=frontend",
     "frontend:build": "npm run build --workspace=frontend",
-    "frontend:start": "npm run start --workspace=frontend",
+    "frontend:preview": "npm run preview --workspace=frontend",
     "seed:dev": "npm run seed:dev --workspace=backend",
     "types": "npm run build --workspace=shared/types",
     "format": "prettier --write .",
     "lint": "npm run lint --workspace=backend && npm run lint --workspace=frontend"
   },
   "devDependencies": {
+    "@types/node": "^26.2.0",
     "prettier": "^3.9.6"
   }
 }

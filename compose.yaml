@@ -1,48 +1,96 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: postgresDb
+  
     env_file:
-      - .env.docker
+      - ./backend/.env.docker
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
       start_period: 10s
-    
+
     restart: always
+
+
+  backend:
+    image: backend-auth
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+
+    container_name: backend
+
+    env_file:
+      - ./backend/.env.docker
+            
+    expose:
+      - "3000"
+
+    restart: always
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+
+    container_name: frontend
+
+    ports:
+      - "80:80"
+
+    restart: always
+
+    depends_on:
+      - backend
 
 
   studio:
     build:
       context: .
+      dockerfile: backend/Dockerfile
       args:
-        - DATABASE_URL=${DATABASE_URL}
+        DATABASE_URL: ${DATABASE_URL}
+
     container_name: prisma_studio
+
     env_file:
-      - .env.docker
+      - ./backend/.env.docker
+
     ports:
       - "127.0.0.1:5555:5555"
-    command: npx prisma studio --browser none --port 5555 --hostname 0.0.0.0
-    depends_on:
-      - postgres
 
-  app:
-    build: .
-    container_name: express
-    ports:
-      - "127.0.0.1:${PORT}:${PORT}"
-    env_file:
-      - .env.docker
-    restart: always
+    command: sh -c "cd backend && npx prisma studio --browser none --port 5555 --hostname 0.0.0.0"
     depends_on:
       postgres:
         condition: service_healthy
+  seed:
+    profiles:
+      - seed
+    image: backend-auth
 
-volumes: 
+    container_name: backend_seed
+
+    env_file:
+      - ./backend/.env.docker
+
+    command: node backend/dist/prisma/seed.js
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+volumes:
   postgres_data:
