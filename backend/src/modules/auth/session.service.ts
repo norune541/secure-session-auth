@@ -66,14 +66,19 @@ export const getUserSessions = async (userId: string) => {
 
 export const create = async (
   userId: string,
+  rememberMe: boolean,
   metaDto: MetadataDto,
   hash: string,
 ) => {
-  const sessionId = await prisma.session.create({
+  const date = new Date();
+  date.setDate(date.getDate() + (rememberMe ? 30 : 1));
+
+  return await prisma.session.create({
     data: {
       ip: metaDto.ip,
       device: metaDto.device,
       refreshToken: hash,
+      expiresAt: date,
       user: {
         connect: { id: userId },
       },
@@ -82,7 +87,6 @@ export const create = async (
       id: true,
     },
   });
-  return sessionId;
 };
 
 export const update = async (sessionId: string, hash: string) => {

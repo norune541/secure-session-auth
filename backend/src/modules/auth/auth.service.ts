@@ -10,7 +10,10 @@ export const authenticateUser = async (
   userDto: LoginDto,
   metaDto: MetadataDto,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
-  const user = await userService.findUserByEmail(userDto.email);
+  const user = await userService.findUserByEmailOrPhone(
+    userDto.email,
+    userDto.phone,
+  );
   if (!user) {
     throw new ApiError("Invalid credentials", 401);
   }
@@ -21,7 +24,12 @@ export const authenticateUser = async (
   }
 
   const { hash, refreshToken } = tokenService.signRefresh();
-  const session = await sessionService.create(user.id, metaDto, hash);
+  const session = await sessionService.create(
+    user.id,
+    userDto.rememberMe,
+    metaDto,
+    hash,
+  );
 
   const accessToken = tokenService.signAccess({
     id: user.id,
