@@ -12,8 +12,10 @@ async function main() {
   const defaultPasswordHash = await bcrypt.hash("password", 10)
 
   const fakeUsers = Array.from({length: 100}).map(() => ({
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    phone: faker.phone.number(),
     email: faker.internet.email(),
-    name: faker.person.firstName(),
     password: defaultPasswordHash,
   }))
 

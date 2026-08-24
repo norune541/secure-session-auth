@@ -14,13 +14,15 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid()) @db.Uuid
-  name     String
-  email    String    @unique
-  role     String    @default("user")
-  password String
-  createdAt    DateTime @default(now()) @db.Timestamptz(3)
-  sessions Session[]
+  id          String    @id @default(uuid()) @db.Uuid
+  firstName   String
+  lastName    String
+  phone       String    @unique
+  email       String    @unique
+  role        String    @default("user")
+  password    String
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  sessions    Session[]
 }
 
 model Session {
@@ -30,7 +32,8 @@ model Session {
   refreshToken String   @unique
   revoked      Boolean  @default(false)
   createdAt    DateTime @default(now()) @db.Timestamptz(3)
-  expiresAt    DateTime @default(dbgenerated("NOW() + interval '30 days'")) @db.Timestamptz(3)
+  expiresAt    DateTime @db.Timestamptz(3)
+  updatedAt    DateTime @default(now()) @updatedAt @db.Timestamptz(3)
   userId       String   @db.Uuid
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
