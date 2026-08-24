@@ -8,7 +8,9 @@ export const findUserProfile = async (id: string) => {
     },
     select: {
       id: true,
-      name: true,
+      firstName: true,
+      lastName: true,
+      phone: true,
       email: true,
       role: true,
     },
