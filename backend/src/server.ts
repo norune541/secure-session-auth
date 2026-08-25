@@ -10,6 +10,7 @@ import { errorHandler } from "./common/middlewares/errorHandler";
 const app = express();
 const PORT = env.PORT;
 
+app.set("trust proxy", true)
 app.use(
   cors({
     origin: env.NODE_ENV === "development" ? "http://localhost:5173" : false,
