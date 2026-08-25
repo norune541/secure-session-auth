@@ -1,7 +1,6 @@
 import { HTTPError } from "ky";
-
-import { protectedApi } from "./index";
-import { ClientError } from "../common/error/ClientError";
+import { protectedApi } from "../../../common/api/index";
+import { ClientError } from "../../../common/error/ClientError";
 import type { AllSessionsResponse } from "@repo/types";
 
 export const getAllUserSessions = async () => {

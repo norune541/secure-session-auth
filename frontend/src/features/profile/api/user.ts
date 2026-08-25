@@ -1,7 +1,6 @@
 import { HTTPError } from "ky";
-
-import { protectedApi } from "./index";
-import { ClientError } from "../common/error/ClientError";
+import { protectedApi } from "../../../common/api/index";
+import { ClientError } from "../../../common/error/ClientError";
 import type { User } from "@repo/types";
 
 export const getCurrentUserProfile = async () => {

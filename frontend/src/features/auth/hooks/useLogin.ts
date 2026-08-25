@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 
-import { login } from "../../api/login";
-import { ClientError } from "../error/ClientError";
+import { login } from "../api/login";
+import { ClientError } from "../../../common/error/ClientError";
 import type { Values } from "../types/Values";
 
 export const useLogin = () => {

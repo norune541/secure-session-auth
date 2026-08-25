@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Table, Tag, Button, message } from "antd";
 
-import { revokeSession } from "../../api/revokeSession";
-import { ClientError } from "../error/ClientError";
+import { revokeSession } from "../api/revokeSession";
+import { ClientError } from "../../../common/error/ClientError";
 import type { AllSessionsResponse } from "@repo/types";
 
 export function SessionsComponent({
@@ -42,6 +42,7 @@ export function SessionsComponent({
     device: s.device,
     status: s.revoked ? "Inactive" : "Active",
     created: formatter.format(new Date(s.createdAt)),
+    updated: formatter.format(new Date(s.updatedAt)),
     expires: formatter.format(new Date(s.expiresAt)),
     current: content.currentSession === s.id,
     revoke:
@@ -77,6 +78,10 @@ export function SessionsComponent({
     {
       title: "Created at",
       dataIndex: "created",
+    },
+    {
+      title: "Last used at",
+      dataIndex: "updated",
     },
     {
       title: "Expires at",

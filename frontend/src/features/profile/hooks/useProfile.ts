@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { message, Skeleton } from "antd";
+import { message } from "antd";
 
-import { getCurrentUserProfile } from "../../api/user";
-import { ProfileComponent } from "../../common/components/profileComponent";
-import { ClientError } from "../../common/error/ClientError";
+import { getCurrentUserProfile } from "../api/user";
+import { ClientError } from "../../../common/error/ClientError";
 import type { User } from "@repo/types";
 
-export function UserPage() {
+export const useProfile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [apiMessage, contextHolder] = message.useMessage();
@@ -31,10 +30,9 @@ export function UserPage() {
     fetchUser();
   }, [apiMessage]);
 
-  return (
-    <>
-      {contextHolder}
-      {loading ? <Skeleton /> : user && <ProfileComponent content={user} />}
-    </>
-  );
-}
+  return {
+    user,
+    loading,
+    contextHolder,
+  };
+};

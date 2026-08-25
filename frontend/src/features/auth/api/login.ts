@@ -1,7 +1,7 @@
 import { HTTPError } from "ky";
 
-import { authApi } from "./index";
-import { ClientError } from "../common/error/ClientError";
+import { authApi } from "../../../common/api/index";
+import { ClientError } from "../../../common/error/ClientError";
 import type { LoginResponse } from "@repo/types";
 
 export async function login({

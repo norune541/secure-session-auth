@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { message, Skeleton } from "antd";
-
-import { getAllUserSessions } from "../../api/sessions";
-import { SessionsComponent } from "../../common/components/SessionsComponent";
-import { ClientError } from "../../common/error/ClientError";
+import { message } from "antd";
+import { getAllUserSessions } from "../api/sessions";
+import { ClientError } from "../../../common/error/ClientError";
 import type { AllSessionsResponse } from "@repo/types";
 
-export function SessionsPage() {
+export const useSessions = () => {
   const [apiMessage, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const [sessions, setSessions] = useState<AllSessionsResponse | null>(null);
@@ -32,14 +30,9 @@ export function SessionsPage() {
     fetchSessions();
   }, [apiMessage]);
 
-  return (
-    <div>
-      {contextHolder}
-      {loading ? (
-        <Skeleton />
-      ) : (
-        sessions && <SessionsComponent content={sessions} />
-      )}
-    </div>
-  );
-}
+  return {
+    sessions,
+    loading,
+    contextHolder,
+  };
+};

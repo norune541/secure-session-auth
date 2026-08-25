@@ -2,9 +2,9 @@ import { Flex, Typography, Input, Divider, Checkbox, Form, Button } from "antd";
 import { UserOutlined, LockOutlined, AppleFilled } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import { GoogleIcon } from "../../common/assets/icons/GoogleIcon";
-import { FacebookIcon } from "../../common/assets/icons/FacebookIcon";
-import { useLogin } from "../../common/hooks/login";
+import { GoogleIcon } from "../../../common/assets/icons/GoogleIcon";
+import { FacebookIcon } from "../../../common/assets/icons/FacebookIcon";
+import { useLogin } from "../hooks/useLogin";
 
 const { Title, Text } = Typography;
 

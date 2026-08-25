@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ConfigProvider } from "antd";
 
 import { ProtectedRoute } from "./common/components/ProtectedRoutes";
-import { MeLayout } from "./pages/me/MeLayout";
-import { LoginPage } from "./pages/login/LoginPage";
-import { UserPage } from "./pages/me/ProfilePage";
-import { SessionsPage } from "./pages/me/SessionsPage";
+import { MeLayout } from "./features/profile/pages/MeLayout";
+import { LoginPage } from "./features/auth/pages/LoginPage";
+import { UserPage } from "./features/profile/pages/ProfilePage";
+import { SessionsPage } from "./features/sessions/pages/SessionsPage";
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
         token: {
           colorLink: "#100068",
           colorLinkHover: "#4929ff",
-          colorBgLayout: "#f0f0f0",
+          colorBgLayout: "#ffffff",
         },
         components: {
           Button: {

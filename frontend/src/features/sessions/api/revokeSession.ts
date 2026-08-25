@@ -1,6 +1,6 @@
-import { protectedApi } from "./index";
 import { HTTPError } from "ky";
-import { ClientError } from "../common/error/ClientError";
+import { protectedApi } from "../../../common/api/index";
+import { ClientError } from "../../../common/error/ClientError";
 
 export const revokeSession = async (userId: string, sessionId: string) => {
   try {

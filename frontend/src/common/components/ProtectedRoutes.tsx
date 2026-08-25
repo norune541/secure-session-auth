@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { getCurrentUserProfile } from "../../api/user";
+import { getCurrentUserProfile } from "../../features/profile/api/user";
 import { ClientError } from "../error/ClientError";
 
 export function ProtectedRoute() {
