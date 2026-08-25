@@ -59,6 +59,7 @@ export const getUserSessions = async (userId: string) => {
       device: true,
       revoked: true,
       createdAt: true,
+      updatedAt: true,
       expiresAt: true,
     },
   });
