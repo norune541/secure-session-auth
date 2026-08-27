@@ -4,7 +4,8 @@ import { ConfigProvider } from "antd";
 import { ProtectedRoute } from "./common/components/ProtectedRoutes";
 import { MeLayout } from "./features/profile/pages/MeLayout";
 import { LoginPage } from "./features/auth/pages/LoginPage";
-import { UserPage } from "./features/profile/pages/ProfilePage";
+import { SignupPage } from "./features/auth/pages/SignupPage";
+import { ProfilePage } from "./features/profile/pages/ProfilePage";
 import { SessionsPage } from "./features/sessions/pages/SessionsPage";
 
 export default function App() {
@@ -28,9 +29,10 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />}></Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<MeLayout />}>
-              <Route index element={<UserPage />}></Route>
+              <Route index element={<ProfilePage />}></Route>
               <Route path="sessions" element={<SessionsPage />}></Route>
             </Route>
           </Route>
