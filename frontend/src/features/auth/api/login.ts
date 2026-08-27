@@ -5,17 +5,17 @@ import { ClientError } from "../../../common/error/ClientError";
 import type { LoginResponse } from "@repo/types";
 
 export async function login({
-  email,
+  login,
   password,
   rememberMe,
 }: {
-  email: string;
+  login: string;
   password: string;
   rememberMe: boolean;
 }) {
   try {
     const data = await authApi
-      .post("auth/sessions", { json: { email, password, rememberMe } })
+      .post("auth/sessions", { json: { login, password, rememberMe } })
       .json<LoginResponse>();
 
     return data;

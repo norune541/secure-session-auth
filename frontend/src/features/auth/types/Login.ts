@@ -1,5 +1,5 @@
-export type Values = {
-  email: string;
+export type Login = {
+  login: string;
   password: string;
   remember: boolean;
 };

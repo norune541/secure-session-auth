@@ -4,7 +4,7 @@ import { message } from "antd";
 
 import { login } from "../api/login";
 import { ClientError } from "../../../common/error/ClientError";
-import type { Values } from "../types/Values";
+import type { Login } from "../types/Login";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -12,11 +12,11 @@ export const useLogin = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (values: Values) => {
+  const handleSubmit = async (values: Login) => {
     setLoading(true);
     try {
       const data = await login({
-        email: values.email,
+        login: values.login,
         password: values.password,
         rememberMe: values.remember ?? false,
       });
