@@ -24,12 +24,11 @@ export const findUserProfile = async (id: string) => {
 };
 
 export const findUserByEmailOrPhone = async (
-  email?: string,
-  phone?: string,
+  login: string,
 ): Promise<{ id: string; role: string; password: string } | null> => {
   const user = await prisma.user.findFirst({
     where: {
-      OR: [{ email: email, phone: phone }],
+      OR: [{ email: login }, { phone: login }],
     },
     select: {
       id: true,

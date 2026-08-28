@@ -10,10 +10,7 @@ export const authenticateUser = async (
   userDto: LoginDto,
   metaDto: MetadataDto,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
-  const user = await userService.findUserByEmailOrPhone(
-    userDto.email,
-    userDto.phone,
-  );
+  const user = await userService.findUserByEmailOrPhone(userDto.login);
   if (!user) {
     throw new ApiError("Invalid credentials", 401);
   }
