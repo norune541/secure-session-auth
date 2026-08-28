@@ -5,12 +5,40 @@ import * as tokenService from "./token.service";
 import { ApiError } from "../../common/errors/ApiError";
 import type { LoginDto } from "./dto/login.dto";
 import type { MetadataDto } from "./dto/metadata.dto";
+import type { SignupDto } from "./dto/signup.dto";
+
+export const signUser = async (userDto: SignupDto, metaDto: MetadataDto) => {
+  await userService.findUserByCredentials(userDto.email, userDto.phone);
+
+  const passwordHash = await bcrypt.hash(userDto.password, 10);
+  const user = await userService.createUser(userDto, passwordHash);
+
+  const { refreshToken, hash } = tokenService.signRefresh();
+
+  const session = await sessionService.create(
+    user.id,
+    userDto.rememberMe,
+    metaDto,
+    hash,
+  );
+
+  const accessToken = tokenService.signAccess({
+    id: user.id,
+    role: user.role,
+    sessionId: session.id,
+  });
+
+  return {
+    refreshToken,
+    accessToken,
+  };
+};
 
 export const authenticateUser = async (
   userDto: LoginDto,
   metaDto: MetadataDto,
 ): Promise<{ accessToken: string; refreshToken: string }> => {
-  const user = await userService.findUserByEmailOrPhone(userDto.login);
+  const user = await userService.findUserByLogin(userDto.login);
   if (!user) {
     throw new ApiError("Invalid credentials", 401);
   }

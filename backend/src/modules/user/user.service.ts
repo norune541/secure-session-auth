@@ -1,5 +1,22 @@
 import prisma from "../../config/prisma";
 import { ApiError } from "../../common/errors/ApiError";
+import type { SignupDto } from "../auth/dto/signup.dto";
+
+export const createUser = async (userDto: SignupDto, hash: string) => {
+  return await prisma.user.create({
+    data: {
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
+      email: userDto.email,
+      phone: userDto.phone,
+      password: hash,
+    },
+    select: {
+      id: true,
+      role: true,
+    },
+  });
+};
 
 export const findUserProfile = async (id: string) => {
   const user = await prisma.user.findUnique({
@@ -23,7 +40,18 @@ export const findUserProfile = async (id: string) => {
   return user;
 };
 
-export const findUserByEmailOrPhone = async (
+export const findUserByCredentials = async (email: string, phone: string) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [{ email }, { phone }],
+    },
+  });
+  if (user) {
+    throw new ApiError("User already exists!", 409);
+  }
+};
+
+export const findUserByLogin = async (
   login: string,
 ): Promise<{ id: string; role: string; password: string } | null> => {
   const user = await prisma.user.findFirst({

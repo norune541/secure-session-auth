@@ -3,6 +3,7 @@ import { LoginSchema } from "./dto/login.dto";
 import { MetadataSchema } from "./dto/metadata.dto";
 import { TokenSchema } from "./dto/token.dto";
 import { uuidSchema } from "./dto/uuid.dto";
+import { SignupSchema } from "./dto/signup.dto";
 import { env } from "../../config/env";
 import * as authService from "./auth.service";
 import * as sessionsService from "./session.service";
@@ -26,6 +27,33 @@ export const login = async (req: Request, res: Response<LoginResponse>) => {
   const parsedMetadata = MetadataSchema.parse(rawMetadata);
 
   const { accessToken, refreshToken } = await authService.authenticateUser(
+    parsedBody,
+    parsedMetadata,
+  );
+
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: parsedBody.rememberMe ? 30 * 24 * 60 * 60 * 1000 : undefined,
+    sameSite: "strict",
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    path: "/",
+  });
+
+  return res.status(200).json({ accessToken });
+};
+
+export const signup = async (req: Request, res: Response) => {
+  const ua = UAParser(req.headers["user-agent"]);
+
+  const rawMetadata = {
+    ip: req.ip,
+    device: `${ua.browser.name} on ${ua.os.name}`,
+  };
+
+  const parsedMetadata = MetadataSchema.parse(rawMetadata);
+  const parsedBody = SignupSchema.parse(req.body);
+
+  const { refreshToken, accessToken } = await authService.signUser(
     parsedBody,
     parsedMetadata,
   );
