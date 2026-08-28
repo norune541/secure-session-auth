@@ -19,12 +19,18 @@ async function main() {
     password: defaultPasswordHash,
   }))
 
-  await prisma.user.createMany({
+  const users = await prisma.user.createManyAndReturn({
+    select: {
+      email: true,
+      phone: true,
+    },
     data: fakeUsers,
     skipDuplicates: true
   })
+  
+  const user = users[0]
+  console.log(`email: ${user.email}, phone: ${user.phone}, password: "password"`)
 
-  console.log("created 100 users with 'password'")
 }
 
 main()
