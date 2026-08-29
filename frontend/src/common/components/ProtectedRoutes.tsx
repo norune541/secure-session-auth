@@ -11,7 +11,7 @@ export function ProtectedRoute() {
 
   useEffect(() => {
     if (!token) {
-      navigate("/login");
+      navigate("/signup");
       return;
     }
     const checkAuthorization = async () => {
@@ -29,7 +29,7 @@ export function ProtectedRoute() {
   }, [navigate, token]);
 
   if (!isAuthorized) {
-    navigate("/login");
+    navigate("/signup");
   }
 
   return <Outlet></Outlet>;
