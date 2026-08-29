@@ -16,12 +16,21 @@ export default function App() {
           colorLink: "#100068",
           colorLinkHover: "#4929ff",
           colorBgLayout: "#ffffff",
+          borderRadius: 18,
         },
         components: {
           Button: {
             colorPrimary: "#100068",
             colorPrimaryHover: "#4929ff",
             colorPrimaryBorderHover: "#4929ff",
+          },
+          Input: {
+            borderRadius: 18,
+            paddingBlock: 8,
+            colorBgContainer: "#f8f8f8",
+          },
+          Typography: {
+            colorTextHeading: "#4929ff",
           },
         },
       }}
