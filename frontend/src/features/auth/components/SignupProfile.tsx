@@ -16,7 +16,7 @@ import { FacebookIcon } from "../../../common/assets/icons/FacebookIcon";
 const { Text, Title } = Typography;
 const { useBreakpoint } = Grid;
 
-export function SignupProfile({ step }) {
+export function SignupProfile({ step, finish }) {
   const screens = useBreakpoint();
   const isDesktop = screens.md;
 
@@ -36,7 +36,14 @@ export function SignupProfile({ step }) {
         >
           Just a few more details and your account will be ready.
         </Text>
-        <Form layout="vertical" style={{ width: "100%", maxWidth: "500px" }}>
+        <Form
+          layout="vertical"
+          style={{ width: "100%", maxWidth: "500px" }}
+          onFinish={finish}
+          initialValues={{
+            rememberMe: false,
+          }}
+        >
           <Form.Item
             name="firstName"
             label="First name"
