@@ -7,15 +7,15 @@ import { SignupSchema } from "./dto/signup.dto";
 import { env } from "../../config/env";
 import * as authService from "./auth.service";
 import * as sessionsService from "./session.service";
+import { ApiError } from "../../common/errors/ApiError";
 import type { Request, Response } from "express";
 import type {
   AllSessionsResponse,
-  LoginResponse,
+  AuthResponse,
   RefreshSessionResponse,
 } from "@repo/types";
-import { ApiError } from "../../common/errors/ApiError";
 
-export const login = async (req: Request, res: Response<LoginResponse>) => {
+export const login = async (req: Request, res: Response<AuthResponse>) => {
   const ua = UAParser(req.headers["user-agent"]);
 
   const rawMetadata = {
@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response<LoginResponse>) => {
   return res.status(200).json({ accessToken });
 };
 
-export const signup = async (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response<AuthResponse>) => {
   const ua = UAParser(req.headers["user-agent"]);
 
   const rawMetadata = {
