@@ -8,6 +8,7 @@ import {
   Divider,
   Grid,
 } from "antd";
+import { UserOutlined, PhoneOutlined } from "@ant-design/icons";
 import { AppleFilled } from "@ant-design/icons";
 import { GoogleIcon } from "../../../common/assets/icons/GoogleIcon";
 import { FacebookIcon } from "../../../common/assets/icons/FacebookIcon";
@@ -44,7 +45,7 @@ export function SignupProfile({ step }) {
             ]}
             style={{ flex: 1 }}
           >
-            <Input placeholder="John" />
+            <Input placeholder="John" prefix={<UserOutlined />} />
           </Form.Item>
           <Form.Item
             name="lastName"
@@ -54,7 +55,7 @@ export function SignupProfile({ step }) {
             ]}
             style={{ flex: 1 }}
           >
-            <Input placeholder="Doe" />
+            <Input placeholder="Doe" prefix={<UserOutlined />} />
           </Form.Item>
 
           <Form.Item
@@ -62,7 +63,7 @@ export function SignupProfile({ step }) {
             label="Phone"
             rules={[{ required: true, message: "Please write your phone!" }]}
           >
-            <Input placeholder="+1 202 555 0123" />
+            <Input placeholder="+1 202 555 0123" prefix={<PhoneOutlined />} />
           </Form.Item>
           <Flex justify="space-between">
             <Form.Item
@@ -112,7 +113,7 @@ export function SignupProfile({ step }) {
                 style={{ flex: 1, borderRadius: 12 }}
                 icon={<FacebookIcon />}
               >
-                {isDesktop && <span>Faceebook</span>}
+                {isDesktop && <span>Facebook</span>}
               </Button>
             </Flex>
           </Form.Item>
