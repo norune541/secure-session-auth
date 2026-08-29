@@ -2,7 +2,7 @@ import { HTTPError } from "ky";
 
 import { authApi } from "../../../common/api/index";
 import { ClientError } from "../../../common/error/ClientError";
-import type { LoginResponse } from "@repo/types";
+import type { AuthResponse } from "@repo/types";
 
 export async function login({
   login,
@@ -16,7 +16,7 @@ export async function login({
   try {
     const data = await authApi
       .post("auth/sessions", { json: { login, password, rememberMe } })
-      .json<LoginResponse>();
+      .json<AuthResponse>();
 
     return data;
   } catch (err) {
