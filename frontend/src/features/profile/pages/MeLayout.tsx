@@ -15,6 +15,7 @@ import { UserOutlined, MenuOutlined, LockOutlined } from "@ant-design/icons";
 
 import { SessionsIcon } from "../../../common/assets/icons/SessionsIcon";
 import { CompanyIcon } from "../../../common/assets/icons/CompanyIcon";
+import { PasswordModal } from "../components/PasswordModal";
 import type { MenuProps } from "antd";
 
 const { Header, Sider, Content } = Layout;
@@ -27,6 +28,7 @@ export function MeLayout() {
 
   const isDesktop = screens.md;
 
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const {
@@ -42,6 +44,8 @@ export function MeLayout() {
       case "sessions":
         navigate("/sessions");
         break;
+      case "changePassword":
+        setIsPasswordModalOpen(true);
     }
   };
 
@@ -66,6 +70,10 @@ export function MeLayout() {
 
   return (
     <Layout style={{ minHeight: "100dvh" }}>
+      <PasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
       {isDesktop && (
         <Sider
           trigger={null}
