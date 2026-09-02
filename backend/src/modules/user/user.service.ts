@@ -54,7 +54,7 @@ export const findUserByCredentials = async (email: string, phone: string) => {
 export const findUserByLogin = async (
   login: string,
 ): Promise<{ id: string; role: string; password: string } | null> => {
-  const user = await prisma.user.findFirst({
+  return await prisma.user.findFirst({
     where: {
       OR: [{ email: login }, { phone: login }],
     },
@@ -64,6 +64,35 @@ export const findUserByLogin = async (
       password: true,
     },
   });
+};
+
+export const findUserPasswordHashById = async (userId: string) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+    select: {
+      password: true,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError("User not found", 404);
+  }
 
   return user;
+};
+
+export const updatePasswordhash = async (
+  userId: string,
+  newPasswordHash: string,
+) => {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      password: newPasswordHash,
+    },
+  });
 };
