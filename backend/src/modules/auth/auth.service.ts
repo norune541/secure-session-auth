@@ -3,9 +3,11 @@ import * as userService from "../user/user.service";
 import * as sessionService from "./session.service";
 import * as tokenService from "./token.service";
 import { ApiError } from "../../common/errors/ApiError";
+
 import type { LoginDto } from "./dto/login.dto";
 import type { MetadataDto } from "./dto/metadata.dto";
 import type { SignupDto } from "./dto/signup.dto";
+import type { ResetPasswordDto } from "./dto/resetPassword";
 
 export const signUser = async (userDto: SignupDto, metaDto: MetadataDto) => {
   await userService.findUserByCredentials(userDto.email, userDto.phone);
@@ -32,6 +34,23 @@ export const signUser = async (userDto: SignupDto, metaDto: MetadataDto) => {
     refreshToken,
     accessToken,
   };
+};
+
+export const resetPassword = async (
+  userId: string,
+  newPasswordDto: ResetPasswordDto,
+) => {
+  const user = await userService.findUserPasswordHashById(userId);
+  const ok = await bcrypt.compare(
+    newPasswordDto.currentPassword,
+    user.password,
+  );
+  if (!ok) {
+    throw new ApiError("Passwords do not match!", 403);
+  }
+
+  const newPasswordhash = await bcrypt.hash(newPasswordDto.newPassword, 10);
+  await userService.updatePasswordhash(userId, newPasswordhash);
 };
 
 export const authenticateUser = async (
