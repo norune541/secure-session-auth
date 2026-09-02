@@ -1,0 +1,35 @@
+import { useState } from "react";
+import { message } from "antd";
+import { changePassword } from "../api/changePassword";
+import { ClientError } from "../../../common/error/ClientError";
+import type { ValuesChangePassword } from "../types/ValuesChangePassword";
+
+export function usePasswordModal() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const handleSubmit = async (values: ValuesChangePassword) => {
+    try {
+      setLoading(true);
+      await changePassword(values.currentPassword, values.newPassword);
+      setSuccess("Password changed!");
+    } catch (err) {
+      if (err instanceof ClientError) {
+        messageApi.open({
+          type: "error",
+          content: err.message,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    loading,
+    success,
+    handleSubmit,
+    contextHolder,
+  };
+}
