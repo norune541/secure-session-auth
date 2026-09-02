@@ -25,7 +25,8 @@ export const LoginSchema = z
       .trim()
       .min(8, {
         error: "Password must be at least 8 characters",
-      }),
+      })
+      .max(100, { error: "Password must be no long than 100 characters" }),
   })
   .refine(
     ({ login }) => z.email().safeParse(login).success || login.length > 3,
