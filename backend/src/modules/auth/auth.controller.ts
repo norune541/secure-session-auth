@@ -1,9 +1,12 @@
 import { UAParser } from "ua-parser-js";
+
 import { LoginSchema } from "./dto/login.dto";
 import { MetadataSchema } from "./dto/metadata.dto";
 import { TokenSchema } from "./dto/token.dto";
 import { uuidSchema } from "./dto/uuid.dto";
 import { SignupSchema } from "./dto/signup.dto";
+import { ResetPasswordSchema } from "./dto/resetPassword";
+
 import { env } from "../../config/env";
 import * as authService from "./auth.service";
 import * as sessionsService from "./session.service";
@@ -102,6 +105,13 @@ export const handleRefresh = async (
   });
 
   return res.status(200).json({ accessToken });
+};
+
+export const handlePasswordRefresh = async (req: Request, res: Response) => {
+  const parsedPasswords = ResetPasswordSchema.parse(req.body);
+  await authService.resetPassword(req.user.id, parsedPasswords);
+
+  return res.sendStatus(204);
 };
 
 export const getAllUserSessions = async (

@@ -6,7 +6,8 @@ export const SignupSchema = z.object({
   password: z
     .string({ error: "Please write your password!" })
     .trim()
-    .min(8, { error: "Password must be at least 8 characters!" }),
+    .min(8, { error: "Password must be at least 8 characters!" })
+    .max(100, { error: "Password must be no long than 100 characters" }),
   firstName: z
     .string({ error: "Please write your first name!" })
     .trim()
