@@ -1,9 +1,27 @@
-import { Modal, Form, Input, Button } from "antd";
+import { Modal, Form, Input, Button, Flex, Typography } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { usePasswordModal } from "../hooks/usePasswordModal";
+import type { GetProp, ModalProps } from "antd";
 
+const { Text } = Typography;
+
+//TODO: close modal after successful response
 export function PasswordModal({ isOpen, onClose }) {
-  const { loading, success, handleSubmit, contextHolder } = usePasswordModal();
+  const { loading, handleSubmit, contextHolder } = usePasswordModal();
+  const [form] = Form.useForm();
+
+  const styles: ModalProps["styles"] = (
+    info,
+  ): GetProp<ModalProps, "styles", "Return"> => {
+    if (info.props.title) {
+      return {
+        title: {
+          color: "#4929ff",
+        },
+      };
+    }
+    return {};
+  };
 
   return (
     <Modal
@@ -12,21 +30,34 @@ export function PasswordModal({ isOpen, onClose }) {
       open={isOpen}
       onOk={onClose}
       onCancel={onClose}
+      footer={null}
+      styles={styles}
+      afterClose={() => {
+        form.resetFields();
+      }}
     >
       {contextHolder}
-      <p>Here you can change your password.</p>
-      <Form layout="vertical" onFinish={handleSubmit}>
+      <Text>Here you can change your password.</Text>
+      <Form
+        layout="vertical"
+        onFinish={handleSubmit}
+        style={{ marginTop: 20 }}
+        form={form}
+      >
         <Form.Item
           name="currentPassword"
           label="Current password"
           rules={[
             {
               required: true,
-              message: "Please write password!",
+              message: "Please enter password!",
             },
           ]}
         >
-          <Input.Password prefix={<LockOutlined />}></Input.Password>
+          <Input.Password
+            autoComplete="current-password"
+            prefix={<LockOutlined />}
+          ></Input.Password>
         </Form.Item>
         <Form.Item
           name="newPassword"
@@ -34,19 +65,48 @@ export function PasswordModal({ isOpen, onClose }) {
           rules={[
             {
               required: true,
-              message: "Please write password!",
+              message: "Please enter password!",
             },
           ]}
         >
-          <Input.Password prefix={<LockOutlined />}></Input.Password>
+          <Input.Password
+            autoComplete="new-password"
+            prefix={<LockOutlined />}
+          ></Input.Password>
         </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" type="primary" loading={loading}>
-            Change password
-          </Button>
+        <Form.Item
+          name="confirmPassword"
+          label="Confirm password"
+          dependencies={["newPassword"]}
+
+          rules={[
+            { required: true, message: "Please confirm your password!" },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("newPassword") === value) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject(new Error("Passwords do not match!"));
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            placeholder="Confirm password"
+            prefix={<LockOutlined />}
+            type="password"
+          />
         </Form.Item>
+        <Flex justify="right" gap={10}>
+          <Button onClick={onClose}>Close</Button>
+          <Form.Item>
+            <Button htmlType="submit" type="primary" loading={loading}>
+              Change password
+            </Button>
+          </Form.Item>
+        </Flex>
       </Form>
-      {success && <span>{success}</span>}
     </Modal>
   );
 }

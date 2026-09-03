@@ -6,14 +6,16 @@ import type { ValuesChangePassword } from "../types/ValuesChangePassword";
 
 export function usePasswordModal() {
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleSubmit = async (values: ValuesChangePassword) => {
     try {
       setLoading(true);
       await changePassword(values.currentPassword, values.newPassword);
-      setSuccess("Password changed!");
+      messageApi.open({
+        type: "success",
+        content: "Password changed!",
+      });
     } catch (err) {
       if (err instanceof ClientError) {
         messageApi.open({
@@ -28,7 +30,6 @@ export function usePasswordModal() {
 
   return {
     loading,
-    success,
     handleSubmit,
     contextHolder,
   };

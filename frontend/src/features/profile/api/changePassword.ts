@@ -7,9 +7,9 @@ export const changePassword = async (
   newPassword: string,
 ) => {
   try {
-    await protectedApi
-      .patch("users/password", { json: { currentPassword, newPassword } })
-      .json();
+    await protectedApi.patch("users/password", {
+      json: { currentPassword, newPassword },
+    });
   } catch (err) {
     if (err instanceof HTTPError) {
       throw new ClientError(err.data);
