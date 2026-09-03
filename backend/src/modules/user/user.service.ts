@@ -83,7 +83,7 @@ export const findUserPasswordHashById = async (userId: string) => {
   return user;
 };
 
-export const updatePasswordhash = async (
+export const updatePasswordHash = async (
   userId: string,
   newPasswordHash: string,
 ) => {
