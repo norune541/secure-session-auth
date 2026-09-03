@@ -50,7 +50,7 @@ export const resetPassword = async (
   }
 
   const newPasswordhash = await bcrypt.hash(newPasswordDto.newPassword, 10);
-  await userService.updatePasswordhash(userId, newPasswordhash);
+  await userService.updatePasswordHash(userId, newPasswordhash);
 };
 
 export const authenticateUser = async (
