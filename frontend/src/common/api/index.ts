@@ -6,6 +6,7 @@ export const authApi = ky.create({
   credentials: "include",
 });
 
+//TODO: Fix race condition when multiple requests trigger token refresh concurrently
 export const protectedApi = ky
   .create({
     baseUrl: "/api/",
