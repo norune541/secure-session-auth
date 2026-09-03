@@ -23,11 +23,16 @@ export const protectedApi = ky
       ],
       afterResponse: [
         async ({ request, response }) => {
+          if (response.status !== 401) {
+            return;
+          }
+
           const serverResponse = await response.clone().json();
-          if (
-            response.status === 401 &&
-            serverResponse?.error.type === "JWT_EXPIRED"
-          ) {
+          if (serverResponse?.error?.type === "API_ERROR") {
+            return;
+          }
+
+          if (serverResponse?.error?.type === "JWT_EXPIRED") {
             const { accessToken } = await authApi
               .post("/api/auth/sessions/refresh")
               .json<RefreshSessionResponse>();
