@@ -6,7 +6,8 @@ export const authApi = ky.create({
   credentials: "include",
 });
 
-//TODO: Fix race condition when multiple requests trigger token refresh concurrently
+let refreshPromise: Promise<string | null> | null = null;
+
 export const protectedApi = ky
   .create({
     baseUrl: "/api/",
@@ -34,14 +35,23 @@ export const protectedApi = ky
           }
 
           if (serverResponse?.error?.type === "JWT_EXPIRED") {
-            const { accessToken } = await authApi
-              .post("/api/auth/sessions/refresh")
-              .json<RefreshSessionResponse>();
+            if (!refreshPromise) {
+              refreshPromise = (async () => {
+                try {
+                  const { accessToken } = await authApi
+                    .post("/api/auth/sessions/refresh")
+                    .json<RefreshSessionResponse>();
+                  localStorage.setItem("accessToken", accessToken);
+                  return accessToken;
+                } finally {
+                  refreshPromise = null;
+                }
+              })();
+            }
+            const accessToken = await refreshPromise;
 
             const headers = new Headers(response.headers);
             headers.set("Authorization", `Bearer ${accessToken}`);
-
-            localStorage.setItem("accessToken", accessToken);
 
             return ky.retry({
               request: new Request(request, { headers }),
