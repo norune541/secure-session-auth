@@ -6,8 +6,9 @@ import {
   Divider,
   Avatar,
   Descriptions,
+  Badge,
 } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import type { DescriptionsProps } from "antd";
 import type { User } from "@repo/types";
 
@@ -55,12 +56,16 @@ export function ProfileComponent({ content }: { content: User }) {
           borderRadius: "14px",
         }}
       >
-        <Flex
-          gap="large"
-          style={{ padding: 20, paddingLeft: 0 }}
-          align="center"
-        >
-          <Avatar size={72} icon={<UserOutlined />}></Avatar>
+        <Flex gap="large" style={{ paddingLeft: 0 }} align="center">
+          {/* TODO: Implement hook and Badge component to trigger changeProfile on click */}
+          <Badge
+            count={<EditOutlined style={{ fontSize: 20 }} />}
+            offset={[-10, 60]}
+            style={{ background: "#fff", borderRadius: 16, padding: 5 }}
+          >
+            <Avatar size={72} icon={<UserOutlined />} />
+          </Badge>
+
           <Flex vertical gap="small">
             <Text>
               {content.firstName} {content.lastName}
