@@ -5,9 +5,8 @@ import type { GetProp, ModalProps } from "antd";
 
 const { Text } = Typography;
 
-//TODO: close modal after successful response
 export function PasswordModal({ isOpen, onClose }) {
-  const { loading, handleSubmit, contextHolder } = usePasswordModal();
+  const { loading, handleSubmit, contextHolder } = usePasswordModal(onClose);
   const [form] = Form.useForm();
 
   const styles: ModalProps["styles"] = (

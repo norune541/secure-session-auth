@@ -4,7 +4,7 @@ import { changePassword } from "../api/changePassword";
 import { ClientError } from "../../../common/error/ClientError";
 import type { ValuesChangePassword } from "../types/ValuesChangePassword";
 
-export function usePasswordModal() {
+export function usePasswordModal(onClose) {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -16,6 +16,7 @@ export function usePasswordModal() {
         type: "success",
         content: "Password changed!",
       });
+      if (onClose) onClose();
     } catch (err) {
       if (err instanceof ClientError) {
         messageApi.open({
