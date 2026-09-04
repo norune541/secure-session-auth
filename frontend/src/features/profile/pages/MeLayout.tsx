@@ -11,7 +11,12 @@ import {
   Grid,
   Drawer,
 } from "antd";
-import { UserOutlined, MenuOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  MenuOutlined,
+  LockOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
 
 import { SessionsIcon } from "../../../common/assets/icons/SessionsIcon";
 import { CompanyIcon } from "../../../common/assets/icons/CompanyIcon";
@@ -49,6 +54,9 @@ export function MeLayout() {
     }
   };
 
+  // TODO: Implement session activity logs
+  // - Create `useActivityLogs` hook for data fetching
+  // - Design and build the Activity Logs page component
   const menuItems = (
     <Menu
       mode="inline"
@@ -62,7 +70,12 @@ export function MeLayout() {
         {
           key: "changePassword",
           icon: <LockOutlined />,
-          label: "Change password",
+          label: "Change Password",
+        },
+        {
+          key: "activityLogs",
+          icon: <ClockCircleOutlined />,
+          label: "Activity Logs",
         },
       ]}
     />
@@ -84,23 +97,16 @@ export function MeLayout() {
             borderRight: "1px solid #F0F0F0",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "14px",
-            }}
-          >
-            <Button icon={<CompanyIcon />}></Button>
-          </div>
+          <Button style={{ margin: 10 }} icon={<CompanyIcon />}>
+            Company name
+          </Button>
           {menuItems}
         </Sider>
       )}
 
       {!isDesktop && (
         <Drawer
-          title={<Button icon={<CompanyIcon />}></Button>}
+          title={<Button icon={<CompanyIcon />}>Company name</Button>}
           placement="left"
           onClose={() => setMobileMenuOpen(false)}
           open={mobileMenuOpen}
