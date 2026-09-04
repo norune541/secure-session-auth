@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma";
 import { ApiError } from "../../common/errors/ApiError";
 import type { SignupDto } from "../auth/dto/signup.dto";
+import type { PatchUserDto } from "../auth/dto/patchUser.dto";
 
 export const createUser = async (userDto: SignupDto, hash: string) => {
   return await prisma.user.create({
@@ -93,6 +94,28 @@ export const updatePasswordHash = async (
     },
     data: {
       password: newPasswordHash,
+    },
+  });
+};
+
+export const patchUser = async (userDto: PatchUserDto, userId: string) => {
+  return await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
+      email: userDto.email,
+      phone: userDto.phone,
+    },
+    select: {
+      id: true,
+      role: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      phone: true,
     },
   });
 };
