@@ -10,7 +10,11 @@ import type { SignupDto } from "./dto/signup.dto";
 import type { ResetPasswordDto } from "./dto/resetPassword";
 
 export const signUser = async (userDto: SignupDto, metaDto: MetadataDto) => {
-  await userService.findUserByCredentials(userDto.email, userDto.phone);
+  await userService.findUserByCredentials(
+    undefined,
+    userDto.email,
+    userDto.phone,
+  );
 
   const passwordHash = await bcrypt.hash(userDto.password, 10);
   const user = await userService.createUser(userDto, passwordHash);

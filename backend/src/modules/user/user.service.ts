@@ -41,20 +41,40 @@ export const findUserProfile = async (id: string) => {
   return user;
 };
 
+/**
+ * Verifies if the email or phone is already taken, throwing a 409 ApiError on conflict.
+ *
+ * @param {string} [userId] - Optional user ID determines the context:
+ *   - With `userId` (Profile Update / patchUser): Excludes the current user from the search
+ *     so they can keep their own credentials without triggering a conflict.
+ *   - Without `userId` (Registration / signup): Searches all records since a new user
+ *     does not have an ID yet.
+ *
+ * @throws {ApiError} 409 - If credentials belong to another user.
+ **/
 export const findUserByCredentials = async (
   userId?: string,
   email?: string,
   phone?: string,
 ) => {
-  const user = await prisma.user.findFirst({
-    where: {
-      id: {
-        not: userId,
-      },
-      OR: [{ email }, { phone }],
-    },
-  });
+  let user;
 
+  if (userId) {
+    user = await prisma.user.findFirst({
+      where: {
+        id: {
+          not: userId,
+        },
+        OR: [{ email }, { phone }],
+      },
+    });
+  } else if (!userId) {
+    user = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { phone }],
+      },
+    });
+  }
   if (user?.email === email) {
     throw new ApiError("This email is already taken!", 409);
   } else if (user?.phone === phone) {
