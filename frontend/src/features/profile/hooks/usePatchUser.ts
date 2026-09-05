@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { patchUser } from "../api/patchUser";
-import { message } from "antd";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { ValuesPatchUser } from "../types/ValuesPatchUser";
 
 export const usePatchUser = () => {
   const [loading, setLoading] = useState(false);
-  const [apiMessage, contextHolder] = message.useMessage();
+  const { handleError } = useNotificationError();
 
   const handleSubmit = async (values: ValuesPatchUser) => {
     try {
@@ -15,10 +15,7 @@ export const usePatchUser = () => {
       window.location.href = "/";
     } catch (err) {
       if (err instanceof ClientError) {
-        apiMessage.open({
-          type: "error",
-          content: err.message,
-        });
+        handleError(err);
       }
     } finally {
       setLoading(false);
@@ -27,7 +24,6 @@ export const usePatchUser = () => {
 
   return {
     loading,
-    contextHolder,
     handleSubmit,
   };
 };

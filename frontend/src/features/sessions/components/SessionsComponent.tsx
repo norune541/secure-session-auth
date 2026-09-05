@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Table, Tag, Button, message } from "antd";
+import { Table, Tag, Button } from "antd";
 
 import { revokeSession } from "../api/revokeSession";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { AllSessionsResponse } from "@repo/types";
 
 export function SessionsComponent({
@@ -11,7 +12,7 @@ export function SessionsComponent({
   content: AllSessionsResponse;
 }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
-  const [apiMessage, contextHolder] = message.useMessage();
+  const { handleError } = useNotificationError();
 
   const handleRevoke = async (userId: string, sessionId: string) => {
     setLoadingId(sessionId);
@@ -19,11 +20,7 @@ export function SessionsComponent({
       await revokeSession(userId, sessionId);
     } catch (err) {
       if (err instanceof ClientError) {
-        await apiMessage.open({
-          type: "error",
-          content: "Cannot delete this session",
-          duration: 3,
-        });
+        handleError(err);
       }
     } finally {
       setLoadingId(null);
@@ -100,13 +97,10 @@ export function SessionsComponent({
   ];
 
   return (
-    <>
-      {contextHolder}
-      <Table
-        pagination={{ defaultPageSize: 5 }}
-        dataSource={dataSource}
-        columns={columns}
-      />
-    </>
+    <Table
+      pagination={{ defaultPageSize: 5 }}
+      dataSource={dataSource}
+      columns={columns}
+    />
   );
 }

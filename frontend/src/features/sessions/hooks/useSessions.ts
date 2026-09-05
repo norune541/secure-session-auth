@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { message } from "antd";
 import { getAllUserSessions } from "../api/sessions";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { AllSessionsResponse } from "@repo/types";
 
 export const useSessions = () => {
-  const [apiMessage, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false);
   const [sessions, setSessions] = useState<AllSessionsResponse | null>(null);
+  const { handleError } = useNotificationError();
 
   useEffect(() => {
     const fetchSessions = async () => {
@@ -16,11 +16,7 @@ export const useSessions = () => {
         const sessions = await getAllUserSessions();
         setSessions(sessions);
       } catch (err) {
-        if (err instanceof ClientError && err.type !== "API_ERROR")
-          apiMessage.open({
-            type: "error",
-            content: err.message,
-          });
+        if (err instanceof ClientError) handleError(err);
         throw err;
       } finally {
         setLoading(false);
@@ -28,11 +24,10 @@ export const useSessions = () => {
     };
 
     fetchSessions();
-  }, [apiMessage]);
+  }, []);
 
   return {
     sessions,
     loading,
-    contextHolder,
   };
 };

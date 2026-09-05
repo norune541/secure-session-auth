@@ -29,7 +29,7 @@ export function PatchUserModal({
   onClose: () => void;
   user: User;
 }) {
-  const { loading, contextHolder, handleSubmit } = usePatchUser();
+  const { loading, handleSubmit } = usePatchUser();
   const [form] = Form.useForm();
 
   return (
@@ -51,7 +51,6 @@ export function PatchUserModal({
         form.resetFields();
       }}
     >
-      {contextHolder}
       <Avatar size={60} icon={<UserOutlined />} />
       <Title level={3}>
         {user.firstName} {user.lastName}

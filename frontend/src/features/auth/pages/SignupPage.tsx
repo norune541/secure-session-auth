@@ -8,7 +8,7 @@ import type { Signup } from "../types/Signup";
 export function SignupPage() {
   const [step, setStep] = useState(1);
   const [allValues, setValues] = useState({});
-  const { executeSignup, contextHolder } = useSignup();
+  const { executeSignup } = useSignup();
 
   // Reuse the Login type because the first signup step contains
   // the same credentials fields as the login form.
@@ -35,7 +35,6 @@ export function SignupPage() {
 
   return (
     <>
-      {contextHolder}
       {step === 1 && <SignupCredentials step={nextStep} />}
       {step === 2 && <SignupProfile step={previousStep} finish={finish} />}
     </>

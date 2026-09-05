@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 
 import { login } from "../api/login";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { Login } from "../types/Login";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+  const { handleError } = useNotificationError();
 
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export const useLogin = () => {
       navigate("/");
     } catch (err) {
       if (err instanceof ClientError) {
-        messageApi.open({ type: "error", content: err.message });
+        handleError(err);
       }
     } finally {
       setLoading(false);
@@ -33,7 +33,6 @@ export const useLogin = () => {
 
   return {
     loading,
-    contextHolder,
     handleSubmit,
   };
 };

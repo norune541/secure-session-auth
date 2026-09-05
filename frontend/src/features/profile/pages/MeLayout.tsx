@@ -149,10 +149,7 @@ export function MeLayout() {
           titlePlacement="start"
           style={{ padding: isDesktop ? "5px 16px" : "5px 10px", margin: 0 }}
         >
-          <Title
-            level={isDesktop ? 4 : 5}
-            style={{ margin: "0px 0px 12px 0px" }}
-          >
+          <Title level={isDesktop ? 4 : 5} style={{ margin: 0 }}>
             My profile
           </Title>
         </Divider>

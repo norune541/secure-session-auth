@@ -3,10 +3,9 @@ import { SessionsComponent } from "../components/SessionsComponent";
 import { useSessions } from "../hooks/useSessions";
 
 export function SessionsPage() {
-  const { sessions, loading, contextHolder } = useSessions();
+  const { sessions, loading } = useSessions();
   return (
     <div>
-      {contextHolder}
       {loading ? (
         <Skeleton />
       ) : (

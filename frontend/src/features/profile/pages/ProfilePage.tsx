@@ -3,11 +3,8 @@ import { ProfileComponent } from "../components/ProfileComponent";
 import { useProfile } from "../hooks/useProfile";
 
 export function UserPage() {
-  const { user, loading, contextHolder } = useProfile();
+  const { user, loading } = useProfile();
   return (
-    <>
-      {contextHolder}
-      {loading ? <Skeleton /> : user && <ProfileComponent content={user} />}
-    </>
+    <>{loading ? <Skeleton /> : user && <ProfileComponent content={user} />}</>
   );
 }

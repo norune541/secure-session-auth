@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 
 import { signup } from "../api/signup";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { Signup } from "../types/Signup";
 
 export function useSignup() {
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
+  const { handleError } = useNotificationError();
 
   const executeSignup = async (values: Signup) => {
     try {
@@ -18,16 +18,12 @@ export function useSignup() {
       return response;
     } catch (err) {
       if (err instanceof ClientError) {
-        messageApi.open({
-          type: "error",
-          content: err.message,
-        });
+        handleError(err);
       }
     }
   };
 
   return {
     executeSignup,
-    contextHolder,
   };
 }

@@ -2,11 +2,14 @@ import { useState } from "react";
 import { message } from "antd";
 import { changePassword } from "../api/changePassword";
 import { ClientError } from "../../../common/error/ClientError";
+import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { ValuesChangePassword } from "../types/ValuesChangePassword";
 
 export function usePasswordModal(onClose) {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+
+  const { handleError } = useNotificationError();
 
   const handleSubmit = async (values: ValuesChangePassword) => {
     try {
@@ -19,10 +22,7 @@ export function usePasswordModal(onClose) {
       if (onClose) onClose();
     } catch (err) {
       if (err instanceof ClientError) {
-        messageApi.open({
-          type: "error",
-          content: err.message,
-        });
+        handleError(err);
       }
     } finally {
       setLoading(false);

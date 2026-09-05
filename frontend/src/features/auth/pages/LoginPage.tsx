@@ -19,15 +19,13 @@ const { Title, Text } = Typography;
 const { useBreakpoint } = Grid;
 
 export function LoginPage() {
-  const { loading, contextHolder, handleSubmit } = useLogin();
+  const { loading, handleSubmit } = useLogin();
 
   const screens = useBreakpoint();
   const isDesktop = screens.md;
 
   return (
     <Flex gap={20}>
-      {contextHolder}
-
       <Flex
         flex={1}
         vertical
