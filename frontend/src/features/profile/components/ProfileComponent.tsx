@@ -59,18 +59,25 @@ export function ProfileComponent({ content }: { content: User }) {
           background: colorBgContainer,
           height: "fit-content",
           borderRadius: "14px",
+          paddingLeft: 28,
         }}
       >
         <Flex gap="large" style={{ paddingLeft: 0 }} align="center">
-          <Badge
-            count={<EditOutlined style={{ fontSize: 20 }} />}
-            offset={[-10, 60]}
-            style={{ background: "#fff", borderRadius: 16, padding: 5 }}
-            onClick={() => setIsChangeUserOpen(true)}
-          >
-            <Avatar size={72} icon={<UserOutlined />} />
-          </Badge>
-
+          <div style={{ cursor: "pointer" }}>
+            <Badge
+              count={<EditOutlined style={{ fontSize: 20 }} />}
+              offset={[-10, 60]}
+              style={{
+                background: "#fff",
+                borderRadius: 16,
+                padding: 5,
+              }}
+              onClick={() => setIsChangeUserOpen(true)}
+            >
+              {/* TODO: add profile picture */}
+              <Avatar size={72} icon={<UserOutlined />} />
+            </Badge>
+          </div>
           {
             <PatchUserModal
               user={content}
@@ -91,7 +98,7 @@ export function ProfileComponent({ content }: { content: User }) {
           background: colorBgContainer,
           marginTop: "20px",
           borderRadius: "14px",
-          paddingLeft: "50px",
+          paddingLeft: "28px",
           paddingRight: "50px",
           paddingBottom: "30px",
         }}

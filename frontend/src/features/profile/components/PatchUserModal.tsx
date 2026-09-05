@@ -16,7 +16,6 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { usePatchUser } from "../hooks/usePatchUser";
-import type { GetProp, ModalProps } from "antd";
 import type { User } from "@repo/types";
 
 const { Title, Text } = Typography;
@@ -33,19 +32,6 @@ export function PatchUserModal({
   const { loading, contextHolder, handleSubmit } = usePatchUser();
   const [form] = Form.useForm();
 
-  const styles: ModalProps["styles"] = (
-    info,
-  ): GetProp<ModalProps, "styles", "Return"> => {
-    if (info.props.title) {
-      return {
-        title: {
-          color: "#4929ff",
-        },
-      };
-    }
-    return {};
-  };
-
   return (
     <Modal
       centered
@@ -53,7 +39,6 @@ export function PatchUserModal({
       onOk={onClose}
       onCancel={onClose}
       footer={null}
-      styles={styles}
       width={{
         xs: "90%",
         sm: "80%",

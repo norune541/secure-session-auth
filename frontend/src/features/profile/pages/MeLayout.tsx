@@ -97,7 +97,7 @@ export function MeLayout() {
             borderRight: "1px solid #F0F0F0",
           }}
         >
-          <Button style={{ margin: 10 }} icon={<CompanyIcon />}>
+          <Button style={{ margin: 20 }} icon={<CompanyIcon />}>
             Company name
           </Button>
           {menuItems}

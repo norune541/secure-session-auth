@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Button, Flex, Typography } from "antd";
+import { Modal, Form, Input, Button, Flex, Typography, Divider } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { usePasswordModal } from "../hooks/usePasswordModal";
 import type { GetProp, ModalProps } from "antd";
@@ -43,17 +43,19 @@ export function PasswordModal({ isOpen, onClose }) {
         style={{ marginTop: 20 }}
         form={form}
       >
+        <Divider />
         <Form.Item
           name="currentPassword"
           label="Current password"
           rules={[
             {
               required: true,
-              message: "Please enter password!",
+              message: "Please enter your password!",
             },
           ]}
         >
           <Input.Password
+            placeholder="Enter your current password"
             autoComplete="current-password"
             prefix={<LockOutlined />}
           ></Input.Password>
@@ -64,11 +66,12 @@ export function PasswordModal({ isOpen, onClose }) {
           rules={[
             {
               required: true,
-              message: "Please enter password!",
+              message: "Please enter your password!",
             },
           ]}
         >
           <Input.Password
+            placeholder="Enter new password"
             autoComplete="new-password"
             prefix={<LockOutlined />}
           ></Input.Password>
@@ -97,6 +100,8 @@ export function PasswordModal({ isOpen, onClose }) {
             type="password"
           />
         </Form.Item>
+        <Divider />
+
         <Flex justify="right" gap={10}>
           <Button onClick={onClose}>Close</Button>
           <Form.Item>
