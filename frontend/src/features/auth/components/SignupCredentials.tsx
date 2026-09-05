@@ -1,5 +1,5 @@
 import { Flex, Typography, Input, Divider, Form, Button, Grid } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { AppleFilled } from "@ant-design/icons";
@@ -44,7 +44,7 @@ export function SignupCredentials({ step }) {
               { type: "email", message: "Please write correct email!" },
             ]}
           >
-            <Input placeholder="example@email.com" prefix={<UserOutlined />} />
+            <Input placeholder="example@email.com" prefix={<MailOutlined />} />
           </Form.Item>
 
           <Form.Item
