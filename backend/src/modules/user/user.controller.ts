@@ -9,10 +9,14 @@ export const userProfile = async (req: Request, res: Response<User>) => {
   return res.status(200).json(user);
 };
 
-// TODO: Check whether a user with the provided email or phone number already exists before creation.
-// If the user exists, throw an error
 export const handleUserPatch = async (req: Request, res: Response<User>) => {
   const parsedBody = PatchUserSchema.parse(req.body);
+  await userService.findUserByCredentials(
+    req.user.id,
+    parsedBody.email,
+    parsedBody.phone,
+  );
+
   const updatedUser = await userService.patchUser(parsedBody, req.user.id);
   return res.status(200).json(updatedUser);
 };

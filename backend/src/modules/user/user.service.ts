@@ -41,14 +41,24 @@ export const findUserProfile = async (id: string) => {
   return user;
 };
 
-export const findUserByCredentials = async (email: string, phone: string) => {
+export const findUserByCredentials = async (
+  userId?: string,
+  email?: string,
+  phone?: string,
+) => {
   const user = await prisma.user.findFirst({
     where: {
+      id: {
+        not: userId,
+      },
       OR: [{ email }, { phone }],
     },
   });
-  if (user) {
-    throw new ApiError("User already exists!", 409);
+
+  if (user?.email === email) {
+    throw new ApiError("This email is already taken!", 409);
+  } else if (user?.phone === phone) {
+    throw new ApiError("This phone is already taken!", 409);
   }
 };
 
