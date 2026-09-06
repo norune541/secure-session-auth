@@ -8,6 +8,7 @@ import {
   Avatar,
   Typography,
   Upload,
+  Grid,
 } from "antd";
 import {
   UserOutlined,
@@ -19,6 +20,7 @@ import { usePatchUser } from "../hooks/usePatchUser";
 import type { User } from "@repo/types";
 
 const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
 
 export function PatchUserModal({
   isOpen,
@@ -31,6 +33,8 @@ export function PatchUserModal({
 }) {
   const { loading, handleSubmit } = usePatchUser();
   const [form] = Form.useForm();
+  const screens = useBreakpoint();
+  const isDesktop = screens.md;
 
   return (
     <Modal
@@ -71,42 +75,47 @@ export function PatchUserModal({
           email: user.email,
         }}
       >
-        <Form.Item label="Name">
-          <Flex gap={20}>
-            <Form.Item name="firstName" noStyle>
-              <Input placeholder="First Name" prefix={<UserOutlined />} />
-            </Form.Item>
-            <Form.Item name="lastName" noStyle>
-              <Input placeholder="Last name" prefix={<UserOutlined />} />
-            </Form.Item>
-          </Flex>
-        </Form.Item>
-        <Divider />
-        <Form.Item label="Email address" name="email">
-          <Input placeholder="Email" prefix={<MailOutlined />} />
-        </Form.Item>
-        <Divider />
-        <Form.Item label="Phone number" name="phone">
-          <Input placeholder="Phone" prefix={<PhoneOutlined />} />
-        </Form.Item>
-        <Divider />
+        <div
+          style={!isDesktop ? { maxHeight: 300, overflowY: "auto" } : undefined}
+        >
+          <Form.Item label="Name">
+            <Flex gap={20}>
+              <Form.Item name="firstName" noStyle>
+                <Input placeholder="First Name" prefix={<UserOutlined />} />
+              </Form.Item>
+              <Form.Item name="lastName" noStyle>
+                <Input placeholder="Last name" prefix={<UserOutlined />} />
+              </Form.Item>
+            </Flex>
+          </Form.Item>
+          <Divider />
+          <Form.Item label="Email address" name="email">
+            <Input placeholder="Email" prefix={<MailOutlined />} />
+          </Form.Item>
+          <Divider />
+          <Form.Item label="Phone number" name="phone">
+            <Input placeholder="Phone" prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Divider />
 
-        {/* TODO: update profile picture */}
-        <Form.Item label="Profile picture">
-          <Flex gap={20}>
-            <Upload>
-              <Button
-                icon={<UploadOutlined />}
-                style={{ background: "#f8f8f8" }}
-              >
-                Upload
-              </Button>
-            </Upload>
-            <Avatar icon={<UserOutlined />}></Avatar>
-          </Flex>
-        </Form.Item>
-        <Divider />
-        <Flex justify="right" gap={10}>
+          {/* TODO: update profile picture */}
+          <Form.Item label="Profile picture">
+            <Flex gap={20}>
+              <Upload>
+                <Button
+                  icon={<UploadOutlined />}
+                  style={{ background: "#f8f8f8" }}
+                >
+                  Upload
+                </Button>
+              </Upload>
+              <Avatar icon={<UserOutlined />}></Avatar>
+            </Flex>
+          </Form.Item>
+          <Divider />
+        </div>
+
+        <Flex justify="right" gap={10} style={{ marginTop: 10 }}>
           <Button onClick={onClose}>Close</Button>
 
           <Button htmlType="submit" type="primary" loading={loading}>
