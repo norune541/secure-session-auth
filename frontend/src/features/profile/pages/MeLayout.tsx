@@ -120,6 +120,9 @@ export function MeLayout() {
       <Layout>
         <Header
           style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
             padding: isDesktop ? "0 0px" : "0 12px",
             background: "#ffffff",
             borderRadius: "14px",

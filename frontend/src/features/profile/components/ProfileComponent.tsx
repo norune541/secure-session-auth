@@ -2,12 +2,12 @@ import { useState } from "react";
 import {
   Layout,
   Flex,
-  theme,
   Typography,
   Divider,
   Avatar,
   Descriptions,
   Badge,
+  Grid,
 } from "antd";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 
@@ -17,38 +17,66 @@ import type { User } from "@repo/types";
 
 const { Header, Content } = Layout;
 const { Text, Title } = Typography;
+const { useBreakpoint } = Grid;
 
 export function ProfileComponent({ content }: { content: User }) {
   const [isChangeUserOpen, setIsChangeUserOpen] = useState(false);
+  const screens = useBreakpoint();
+  const isDesktop = screens.md;
 
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const mobileStyles: React.CSSProperties = {
+    background: "#f8f8f8",
+    width: "100%",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 16,
+  };
+
   const items: DescriptionsProps["items"] = [
     {
       key: "1",
       label: "First Name",
-      children: content.firstName,
+      children: (
+        <span style={!isDesktop ? mobileStyles : undefined}>
+          {content.firstName}
+        </span>
+      ),
     },
     {
       key: "2",
       label: "Last Name",
-      children: content.lastName,
+      children: (
+        <span style={!isDesktop ? mobileStyles : undefined}>
+          {content.lastName}
+        </span>
+      ),
     },
     {
       key: "3",
       label: "Email",
-      children: content.email,
+      children: (
+        <span style={!isDesktop ? mobileStyles : undefined}>
+          {content.email}
+        </span>
+      ),
     },
     {
       key: "4",
       label: "Phone",
-      children: content.phone,
+      children: (
+        <span style={!isDesktop ? mobileStyles : undefined}>
+          {content.phone}
+        </span>
+      ),
     },
     {
       key: "5",
       label: "Role",
-      children: content.role,
+      children: (
+        <span style={!isDesktop ? mobileStyles : undefined}>
+          {content.role}
+        </span>
+      ),
     },
   ];
 
@@ -56,7 +84,7 @@ export function ProfileComponent({ content }: { content: User }) {
     <Layout>
       <Header
         style={{
-          background: colorBgContainer,
+          background: "#fff",
           height: "fit-content",
           borderRadius: "14px",
           paddingLeft: 28,
@@ -95,19 +123,25 @@ export function ProfileComponent({ content }: { content: User }) {
       </Header>
       <Content
         style={{
-          background: colorBgContainer,
           marginTop: "20px",
           borderRadius: "14px",
-          paddingLeft: "28px",
-          paddingRight: "50px",
-          paddingBottom: "30px",
+          paddingLeft: "10px",
+          paddingRight: "16px",
         }}
       >
         <Title level={3} style={{ color: "#4929ff" }}>
           Personal Information
         </Title>
         <Divider />
-        <Descriptions items={items} layout="vertical" />
+        <Descriptions
+          items={items}
+          layout="vertical"
+          size={isDesktop ? "default" : "small"}
+          styles={{
+            label: { paddingBottom: 0, fontWeight: "bold" },
+            content: { paddingBottom: 0 },
+          }}
+        />
       </Content>
     </Layout>
   );
