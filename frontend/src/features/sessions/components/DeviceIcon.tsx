@@ -1,13 +1,11 @@
 import { UserOutlined } from "@ant-design/icons";
-import { ChromeIcon } from "../../../common/assets/icons/ChromeIcon";
-import { FirefoxIcon } from "../../../common/assets/icons/FirefoxIcon";
-import { MicrosoftEdge } from "@dev.icons/react";
+import { MicrosoftEdge, Firefox, Chrome } from "@dev.icons/react";
 
 export const DeviceIcon = ({
   device,
   size,
 }: {
-  device: any;
+  device: string;
   size?: number;
 }) => {
   if (!device) {
@@ -15,10 +13,10 @@ export const DeviceIcon = ({
   }
 
   if (device.includes("Chrome")) {
-    return <ChromeIcon />;
+    return <Chrome size={size} />;
   }
   if (device.includes("Firefox")) {
-    return <FirefoxIcon />;
+    return <Firefox size={size} />;
   }
   if (device.includes("Edge")) {
     return <MicrosoftEdge size={size} />;

@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import {
-  Button,
-  Layout,
-  Menu,
-  theme,
-  Divider,
-  Flex,
-  Typography,
-  Grid,
-  Drawer,
-} from "antd";
+import { Button, Layout, Menu, theme, Flex, Grid, Drawer } from "antd";
 import {
   UserOutlined,
   MenuOutlined,
@@ -24,7 +14,6 @@ import { PasswordModal } from "../components/PasswordModal";
 import type { MenuProps } from "antd";
 
 const { Header, Sider, Content } = Layout;
-const { Title } = Typography;
 const { useBreakpoint } = Grid;
 
 export function MeLayout() {
@@ -147,15 +136,6 @@ export function MeLayout() {
             )}
           </Flex>
         </Header>
-
-        <Divider
-          titlePlacement="start"
-          style={{ padding: isDesktop ? "5px 16px" : "5px 10px", margin: 0 }}
-        >
-          <Title level={isDesktop ? 4 : 5} style={{ margin: 0 }}>
-            My profile
-          </Title>
-        </Divider>
 
         <Content
           style={{

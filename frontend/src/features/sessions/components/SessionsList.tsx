@@ -39,22 +39,22 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
         color: "black",
       }}
     >
-      <DeviceIcon device={item.device} />
+      <DeviceIcon device={item.device} size={30} />
 
       <Flex vertical style={{ marginLeft: 5 }}>
-        <span>{item.device}</span>
-        <span>Last active {item.updatedAt}</span>
+        <Text>{item.device}</Text>
+        <Text>Last active {item.updatedAt}</Text>
       </Flex>
     </Button>
   );
 
   return (
-    <Content style={{ marginLeft: 20 }}>
-      <Title level={3} style={{ marginBottom: 0 }}>
+    <Content>
+      <Title level={3} style={{ marginBottom: 0, marginTop: 0 }}>
         Sessions
       </Title>
       <Text>Tap a device to log out</Text>
-      <Divider style={{ marginTop: 10 }} />
+      <Divider></Divider>
 
       <Listy rowKey="key" itemRender={renderItem} items={items}></Listy>
     </Content>
