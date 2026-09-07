@@ -3,11 +3,13 @@ import { ChromeIcon } from "../../../common/assets/icons/ChromeIcon";
 import { FirefoxIcon } from "../../../common/assets/icons/FirefoxIcon";
 import { MicrosoftEdge } from "@dev.icons/react";
 
-interface DeviceIconProps {
-  device?: "Chrome" | "Firefox";
-}
-
-export const DeviceIcon = ({ device }: DeviceIconProps) => {
+export const DeviceIcon = ({
+  device,
+  size,
+}: {
+  device: any;
+  size?: number;
+}) => {
   if (!device) {
     return <UserOutlined />;
   }
@@ -19,6 +21,6 @@ export const DeviceIcon = ({ device }: DeviceIconProps) => {
     return <FirefoxIcon />;
   }
   if (device.includes("Edge")) {
-    return <MicrosoftEdge />;
+    return <MicrosoftEdge size={size} />;
   }
 };
