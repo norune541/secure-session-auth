@@ -33,7 +33,7 @@ COPY shared/types/package.json ./shared/types/package.json
 
 RUN npm ci --omit=dev
 
-COPY --from=builder /app/backend/node_modules/.prisma ./backend/node_modules/.prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/backend/dist ./backend/dist
 COPY --from=builder /app/backend/prisma ./backend/prisma
 COPY --from=builder /app/backend/prisma.config.ts ./backend/prisma.config.ts
