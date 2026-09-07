@@ -31,6 +31,10 @@ export const App: React.FC = () => (
         Typography: {
           colorTextHeading: "#4929ff",
         },
+        Listy: {
+          itemPaddingBlock: 0,
+          itemPaddingInline: 0,
+        },
       },
     }}
   >
