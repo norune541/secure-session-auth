@@ -7,6 +7,7 @@ import { LoginPage } from "./features/auth/pages/LoginPage";
 import { SignupPage } from "./features/auth/pages/SignupPage";
 import { UserPage } from "./features/profile/pages/ProfilePage";
 import { SessionsPage } from "./features/sessions/pages/SessionsPage";
+import { RevokeSession } from "./features/sessions/pages/RevokeSession";
 
 export const App: React.FC = () => (
   <ConfigProvider
@@ -52,6 +53,7 @@ export const App: React.FC = () => (
             <Route path="/" element={<MeLayout />}>
               <Route index element={<UserPage />}></Route>
               <Route path="sessions" element={<SessionsPage />}></Route>
+              <Route path="sessions/revoke" element={<RevokeSession />}></Route>
             </Route>
           </Route>
         </Routes>
