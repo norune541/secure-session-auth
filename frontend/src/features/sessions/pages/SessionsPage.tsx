@@ -1,5 +1,5 @@
 import { Skeleton } from "antd";
-import { SessionsComponent } from "../components/SessionsComponent";
+import { SessionsTable } from "../components/SessionsTable";
 import { useSessions } from "../hooks/useSessions";
 
 export function SessionsPage() {
@@ -9,7 +9,7 @@ export function SessionsPage() {
       {loading ? (
         <Skeleton />
       ) : (
-        sessions && <SessionsComponent content={sessions} />
+        sessions && <SessionsTable content={sessions} />
       )}
     </div>
   );

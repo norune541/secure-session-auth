@@ -1,34 +1,9 @@
-import { useState } from "react";
 import { Table, Tag, Button } from "antd";
-
-import { revokeSession } from "../api/revokeSession";
-import { ClientError } from "../../../common/error/ClientError";
-import { useNotificationError } from "../../../common/hooks/useNotificationError";
+import { useRevokeSession } from "../hooks/useRevokeSession";
 import type { AllSessionsResponse } from "@repo/types";
 
-export function SessionsComponent({
-  content,
-}: {
-  content: AllSessionsResponse;
-}) {
-  const [loadingId, setLoadingId] = useState<string | null>(null);
-  const { handleError } = useNotificationError();
-
-  const handleRevoke = async (userId: string, sessionId: string) => {
-    setLoadingId(sessionId);
-    try {
-      await revokeSession(userId, sessionId);
-    } catch (err) {
-      if (err instanceof ClientError) {
-        handleError(err);
-      }
-    } finally {
-      setLoadingId(null);
-
-      window.location.reload();
-    }
-  };
-
+export function SessionsTable({ content }: { content: AllSessionsResponse }) {
+  const { loadingId, handleRevoke } = useRevokeSession();
   const formatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
     timeStyle: "short",
