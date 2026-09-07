@@ -13,16 +13,21 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
     dateStyle: "medium",
     timeStyle: "short",
   });
+
   const items = content.sessions.map((s, index) => ({
     key: index,
+    userId: s.userId,
+    revoked: s.revoked,
+    createdAt: formatter.format(new Date(s.createdAt)),
+    expiresAt: formatter.format(new Date(s.expiresAt)),
     device: s.device,
-    updated: formatter.format(new Date(s.updatedAt)),
+    updatedAt: formatter.format(new Date(s.updatedAt)),
   }));
   const renderItem = (item) => (
     <Button
       type="link"
       block
-      onClick={() => navigate("/sessions/revoke")}
+      onClick={() => navigate("/sessions/revoke", { state: { item } })}
       style={{
         padding: 20,
         paddingLeft: 0,
@@ -38,7 +43,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
 
       <Flex vertical style={{ marginLeft: 5 }}>
         <span>{item.device}</span>
-        <span>Last active {item.updated}</span>
+        <span>Last active {item.updatedAt}</span>
       </Flex>
     </Button>
   );
