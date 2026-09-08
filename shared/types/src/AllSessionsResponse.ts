@@ -1,4 +1,4 @@
-interface Sessions {
+export interface Session {
   id: string;
   userId: string;
   ip: string;
@@ -9,6 +9,6 @@ interface Sessions {
   expiresAt: Date | string;
 }
 export interface AllSessionsResponse {
-  sessions: Sessions[];
-  currentSession: string;
+  sessions: Session[];
+  currentSession: boolean;
 }

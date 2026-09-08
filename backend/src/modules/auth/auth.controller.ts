@@ -14,6 +14,7 @@ import { ApiError } from "../../common/errors/ApiError";
 import type { Request, Response } from "express";
 import type {
   AllSessionsResponse,
+  Session,
   AuthResponse,
   RefreshSessionResponse,
 } from "@repo/types";
@@ -118,13 +119,35 @@ export const getAllUserSessions = async (
   req: Request,
   res: Response<AllSessionsResponse>,
 ) => {
-  const currentSession = req.user.sessionId;
+  const currentSessionId = req.user.sessionId;
   const sessions = await sessionsService.getUserSessions(req.user.id);
 
   return res.status(200).json({
     sessions,
-    currentSession,
+    currentSession: sessions.some((session) => session.id === currentSessionId),
   });
+};
+
+export const getUserSession = async (
+  req: Request,
+  res: Response<Session & { currentSessionId: boolean }>,
+) => {
+  const parsedSessionId = uuidSchema.parse(req.params.sessionId);
+  const parsedUserId = uuidSchema.parse(req.params.userId);
+  const currentSessionId = req.user.sessionId;
+
+  const session = await sessionsService.getUserSession(
+    parsedUserId,
+    parsedSessionId,
+  );
+
+  if (!session) {
+    throw new ApiError("Session not found", 404);
+  }
+
+  return res
+    .status(200)
+    .json({ ...session, currentSessionId: session.id === currentSessionId });
 };
 
 export const revokeSession = async (req: Request, res: Response) => {

@@ -46,6 +46,26 @@ export const validateRefreshToken = async (inputToken: string) => {
   };
 };
 
+export const getUserSession = async (userId: string, sessionId: string) => {
+  return await prisma.session.findFirst({
+    where: {
+      userId: userId,
+      id: sessionId,
+      expiresAt: { gt: new Date() },
+    },
+    select: {
+      id: true,
+      ip: true,
+      userId: true,
+      device: true,
+      revoked: true,
+      createdAt: true,
+      updatedAt: true,
+      expiresAt: true,
+    },
+  });
+};
+
 export const getUserSessions = async (userId: string) => {
   return await prisma.session.findMany({
     where: {

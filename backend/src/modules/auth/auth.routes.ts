@@ -4,6 +4,7 @@ import {
   logout,
   handleRefresh,
   getAllUserSessions,
+  getUserSession,
   revokeSession,
 } from "./auth.controller";
 import { accessTokenAuth } from "../../common/middlewares/accessTokenAuth";
@@ -13,6 +14,12 @@ export const authRouter = Router();
 
 authRouter.post("/sessions", login);
 authRouter.get("/sessions", accessTokenAuth, getAllUserSessions);
+authRouter.get(
+  "/sessions/:sessionId/:userId",
+  accessTokenAuth,
+  isAuthorOrAdmin,
+  getUserSession,
+);
 authRouter.delete("/sessions", logout);
 authRouter.delete(
   "/sessions/:sessionId/:userId",
