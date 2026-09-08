@@ -9,16 +9,16 @@ export function SessionsTable({ content }: { content: AllSessionsResponse }) {
     timeStyle: "short",
   });
 
-  const unsortedDataSource = content.sessions.map((s, index) => ({
-    key: index,
+  const unsortedDataSource = content.sessions.map((s) => ({
+    key: s.id,
     device: s.device,
     status: s.revoked ? "Inactive" : "Active",
     created: formatter.format(new Date(s.createdAt)),
     updated: formatter.format(new Date(s.updatedAt)),
     expires: formatter.format(new Date(s.expiresAt)),
-    current: content.currentSession,
+    current: s.id === content.currentSession,
     revoke:
-      content.currentSession || s.revoked === true ? null : (
+      s.id === content.currentSession || s.revoked ? null : (
         <Button
           onClick={() => handleRevoke(s.userId, s.id)}
           loading={loadingId === s.id}

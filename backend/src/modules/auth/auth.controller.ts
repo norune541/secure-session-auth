@@ -124,7 +124,7 @@ export const getAllUserSessions = async (
 
   return res.status(200).json({
     sessions,
-    currentSession: sessions.some((session) => session.id === currentSessionId),
+    currentSession: req.user.sessionId,
   });
 };
 

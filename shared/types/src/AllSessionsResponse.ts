@@ -10,5 +10,5 @@ export interface Session {
 }
 export interface AllSessionsResponse {
   sessions: Session[];
-  currentSession: boolean;
+  currentSession: boolean | string;
 }
