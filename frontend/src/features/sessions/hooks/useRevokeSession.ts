@@ -18,7 +18,7 @@ export function useRevokeSession() {
     } finally {
       setLoadingId(null);
 
-      window.location.reload();
+      window.location.href = "/sessions";
     }
   };
 
