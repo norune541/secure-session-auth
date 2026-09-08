@@ -7,6 +7,7 @@ export interface Session {
   createdAt: Date | string;
   updatedAt: Date | string;
   expiresAt: Date | string;
+  currentSessionId?: boolean | string;
 }
 export interface AllSessionsResponse {
   sessions: Session[];
