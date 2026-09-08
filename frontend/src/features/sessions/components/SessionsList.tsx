@@ -17,6 +17,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
   const items = content.sessions.map((s, index) => ({
     key: index,
     userId: s.userId,
+    sessionId: s.id,
     createdAt: formatter.format(new Date(s.createdAt)),
     expiresAt: formatter.format(new Date(s.expiresAt)),
     device: s.device,
@@ -26,7 +27,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
     <Button
       type="link"
       block
-      onClick={() => navigate("/sessions/revoke", { state: { item } })}
+      onClick={() => navigate(`/sessions/${item.userId}/${item.sessionId}`)}
       style={{
         padding: 20,
         paddingLeft: 0,
