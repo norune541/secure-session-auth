@@ -52,6 +52,7 @@ export const getUserSession = async (userId: string, sessionId: string) => {
       userId: userId,
       id: sessionId,
       expiresAt: { gt: new Date() },
+      revoked: false,
     },
     select: {
       id: true,
@@ -71,6 +72,7 @@ export const getUserSessions = async (userId: string) => {
     where: {
       userId: userId,
       expiresAt: { gt: new Date() },
+      revoked: false,
     },
     select: {
       id: true,

@@ -12,13 +12,13 @@ export function SessionsTable({ content }: { content: AllSessionsResponse }) {
   const unsortedDataSource = content.sessions.map((s) => ({
     key: s.id,
     device: s.device,
-    status: s.revoked ? "Inactive" : "Active",
+    status: "Active",
     created: formatter.format(new Date(s.createdAt)),
     updated: formatter.format(new Date(s.updatedAt)),
     expires: formatter.format(new Date(s.expiresAt)),
     current: s.id === content.currentSession,
     revoke:
-      s.id === content.currentSession || s.revoked ? null : (
+      s.id === content.currentSession ? null : (
         <Button
           onClick={() => handleRevoke(s.userId, s.id)}
           loading={loadingId === s.id}

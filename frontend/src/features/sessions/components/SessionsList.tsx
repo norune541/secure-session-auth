@@ -17,7 +17,6 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
   const items = content.sessions.map((s, index) => ({
     key: index,
     userId: s.userId,
-    revoked: s.revoked,
     createdAt: formatter.format(new Date(s.createdAt)),
     expiresAt: formatter.format(new Date(s.expiresAt)),
     device: s.device,
