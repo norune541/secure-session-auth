@@ -119,7 +119,6 @@ export const getAllUserSessions = async (
   req: Request,
   res: Response<AllSessionsResponse>,
 ) => {
-  const currentSessionId = req.user.sessionId;
   const sessions = await sessionsService.getUserSessions(req.user.id);
 
   return res.status(200).json({
@@ -133,11 +132,10 @@ export const getUserSession = async (
   res: Response<Session & { currentSessionId: boolean }>,
 ) => {
   const parsedSessionId = uuidSchema.parse(req.params.sessionId);
-  const parsedUserId = uuidSchema.parse(req.params.userId);
   const currentSessionId = req.user.sessionId;
 
   const session = await sessionsService.getUserSession(
-    parsedUserId,
+    req.user.id,
     parsedSessionId,
   );
 
@@ -152,18 +150,9 @@ export const getUserSession = async (
 
 export const revokeSession = async (req: Request, res: Response) => {
   const rawSessionId = req.params.sessionId;
-  const rawUserId = req.params.userId;
-
   const sessionId = uuidSchema.parse(rawSessionId);
-  const userId = uuidSchema.parse(rawUserId);
 
-  const revoked = await sessionsService.revokeSession(sessionId, userId);
-  if (!revoked.count) {
-    throw new ApiError(
-      "You do not have permission to revoke this session",
-      403,
-    );
-  }
+  await sessionsService.revokeSession(sessionId, req.user.id);
 
   return res.sendStatus(204);
 };
