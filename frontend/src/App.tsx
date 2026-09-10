@@ -54,7 +54,7 @@ export const App: React.FC = () => (
               <Route index element={<UserPage />}></Route>
               <Route path="sessions" element={<SessionsPage />}></Route>
               <Route
-                path="sessions/:userId/:sessionId"
+                path="sessions/:sessionId"
                 element={<RevokeSessionPage />}
               ></Route>
             </Route>
