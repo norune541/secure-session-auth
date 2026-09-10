@@ -14,7 +14,7 @@ async function main() {
   const fakeUsers = Array.from({length: 100}).map(() => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    phone: faker.phone.number(),
+    phone: faker.phone.number({ style: 'international' }),
     email: faker.internet.email(),
     password: defaultPasswordHash,
   }))

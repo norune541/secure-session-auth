@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const SignupSchema = z.object({
   email: z.email({ error: "Please write correct email!" }),
-  phone: z.string({ error: "Please write phone number!" }),
+  phone: z.string({ error: "Please write phone number!" }).regex(/^\+[1-9]\d{1,14}$/, "Please write correct phone number!"),
   password: z
     .string({ error: "Please write your password!" })
     .trim()

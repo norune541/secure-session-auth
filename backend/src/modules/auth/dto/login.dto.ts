@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const phoneRegex = /^\+[1-9]\d{1,14}$/;
+
 export const LoginSchema = z
   .object({
     rememberMe: z.boolean({
@@ -26,14 +28,18 @@ export const LoginSchema = z
       .min(8, {
         error: "Password must be at least 8 characters",
       })
-      .max(100, { error: "Password must be no long than 100 characters" }),
+      .max(100, {
+        error: "Password must be no long than 100 characters",
+      }),
   })
   .refine(
-    ({ login }) => z.email().safeParse(login).success || login.length > 3,
+    ({ login }) =>
+      z.email().safeParse(login).success || phoneRegex.test(login),
     {
       error: "Login must be a valid email or phone number",
       path: ["login"],
     },
   );
+
 
 export type LoginDto = z.infer<typeof LoginSchema>;
