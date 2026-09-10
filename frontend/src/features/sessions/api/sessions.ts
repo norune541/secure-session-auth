@@ -19,10 +19,10 @@ export const getAllUserSessions = async () => {
   }
 };
 
-export const getUserSession = async (sessionId: string, userId: string) => {
+export const getUserSession = async (sessionId: string) => {
   try {
     const data = await protectedApi
-      .get(`auth/sessions/${sessionId}/${userId}`)
+      .get(`auth/sessions/${sessionId}`)
       .json<Session>();
     return data;
   } catch (err) {

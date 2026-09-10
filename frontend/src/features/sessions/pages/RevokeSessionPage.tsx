@@ -10,12 +10,12 @@ const { Title, Text } = Typography;
 
 export function RevokeSessionPage() {
   const navigate = useNavigate();
-  const { userId, sessionId } = useParams();
-  if (!userId || !sessionId) {
+  const { sessionId } = useParams();
+  if (!sessionId) {
     navigate("/sessions");
     return;
   }
-  const { session, loading } = useSession(userId, sessionId);
+  const { session, loading } = useSession(sessionId);
   const { handleRevoke } = useRevokeSession();
 
   const formatter = new Intl.DateTimeFormat("en", {
@@ -63,7 +63,7 @@ export function RevokeSessionPage() {
           {!session.currentSessionId && (
             <Button
               style={{ color: "red", marginTop: 20 }}
-              onClick={() => handleRevoke(userId!, sessionId!)}
+              onClick={() => handleRevoke(sessionId!)}
             >
               Log out
             </Button>
