@@ -36,4 +36,26 @@ model Session {
   updatedAt    DateTime @default(now()) @updatedAt @db.Timestamptz(3)
   userId       String   @db.Uuid
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activities   SessionActivity[]
+}
+
+model SessionActivity {
+  id        String   @id @default(uuid()) @db.Uuid
+
+  sessionId String   @db.Uuid
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  type      SessionActivityType
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([sessionId, createdAt])
+}
+
+enum SessionActivityType {
+  CREATED
+  REFRESHED
+  REVOKED
+  EXPIRED
+  REUSE_DETECTED
+  PASSWORD_UPDATED
 }
