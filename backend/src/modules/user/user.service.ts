@@ -116,15 +116,26 @@ export const findUserPasswordHashById = async (userId: string) => {
 
 export const updatePasswordHash = async (
   userId: string,
+  currentSessionId: string,
   newPasswordHash: string,
 ) => {
-  await prisma.user.update({
-    where: {
-      id: userId,
-    },
-    data: {
-      password: newPasswordHash,
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: newPasswordHash,
+      },
+    });
+
+    await tx.sessionActivity.create({
+      data: {
+        userId,
+        sessionId: currentSessionId,
+        type: "PASSWORD_UPDATED",
+      },
+    });
   });
 };
 

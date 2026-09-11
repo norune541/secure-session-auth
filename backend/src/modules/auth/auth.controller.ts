@@ -76,7 +76,11 @@ export const signup = async (req: Request, res: Response<AuthResponse>) => {
 export const logout = async (req: Request, res: Response) => {
   const rawToken = req.cookies?.refreshToken;
   const parsedToken = TokenSchema.parse(rawToken);
-  await sessionsService.revokeCurrentSession(parsedToken);
+  await sessionsService.revokeCurrentSession(
+    parsedToken,
+    req.user.sessionId,
+    req.user.id,
+  );
 
   res.clearCookie("refreshToken", {
     path: "/",
@@ -110,7 +114,11 @@ export const handleRefresh = async (
 
 export const handlePasswordRefresh = async (req: Request, res: Response) => {
   const parsedPasswords = ResetPasswordSchema.parse(req.body);
-  await authService.resetPassword(req.user.id, parsedPasswords);
+  await authService.resetPassword(
+    req.user.id,
+    req.user.sessionId,
+    parsedPasswords,
+  );
 
   return res.sendStatus(204);
 };
@@ -155,4 +163,19 @@ export const revokeSession = async (req: Request, res: Response) => {
   await sessionsService.revokeSession(sessionId, req.user.id);
 
   return res.sendStatus(204);
+};
+
+export const handleAllSessionActivity = async (req: Request, res: Response) => {
+  const activity = await sessionsService.getAllSessionActivity(req.user.id);
+  return res.status(200).json(activity);
+};
+
+export const handleSessionActivity = async (req: Request, res: Response) => {
+  const sessionId = uuidSchema.parse(req.params.sessionId);
+
+  const activity = await sessionsService.getSessionActivity(
+    sessionId,
+    req.user.id,
+  );
+  return res.status(200).json(activity);
 };

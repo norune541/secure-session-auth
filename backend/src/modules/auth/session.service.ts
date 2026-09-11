@@ -67,6 +67,49 @@ export const getUserSession = async (userId: string, sessionId: string) => {
   });
 };
 
+export const getAllSessionActivity = async (userId: string) => {
+  return await prisma.sessionActivity.findMany({
+    where: {
+      userId,
+    },
+
+    select: {
+      id: true,
+      sessionId: true,
+      type: true,
+      createdAt: true,
+      session: {
+        select: {
+          device: true,
+          ip: true,
+        },
+      },
+    },
+  });
+};
+
+export const getSessionActivity = async (sessionId: string, userId: string) => {
+  return await prisma.sessionActivity.findMany({
+    where: {
+      sessionId,
+      userId,
+    },
+
+    select: {
+      id: true,
+      sessionId: true,
+      type: true,
+      createdAt: true,
+      session: {
+        select: {
+          device: true,
+          ip: true,
+        },
+      },
+    },
+  });
+};
+
 export const getUserSessions = async (userId: string) => {
   return await prisma.session.findMany({
     where: {
@@ -96,30 +139,55 @@ export const create = async (
   const date = new Date();
   date.setDate(date.getDate() + (rememberMe ? 30 : 1));
 
-  return await prisma.session.create({
-    data: {
-      ip: metaDto.ip,
-      device: metaDto.device,
-      refreshToken: hash,
-      expiresAt: date,
-      user: {
-        connect: { id: userId },
+  return await prisma.$transaction(async (tx) => {
+    const session = await tx.session.create({
+      data: {
+        ip: metaDto.ip,
+        device: metaDto.device,
+        refreshToken: hash,
+        expiresAt: date,
+        user: {
+          connect: { id: userId },
+        },
       },
-    },
-    select: {
-      id: true,
-    },
+      select: {
+        id: true,
+      },
+    });
+
+    await tx.sessionActivity.create({
+      data: {
+        userId,
+        sessionId: session.id,
+        type: "CREATED",
+      },
+    });
+    return session;
   });
 };
 
-export const update = async (sessionId: string, hash: string) => {
-  await prisma.session.update({
-    where: {
-      id: sessionId,
-    },
-    data: {
-      refreshToken: hash,
-    },
+export const update = async (
+  sessionId: string,
+  userId: string,
+  hash: string,
+) => {
+  return await prisma.$transaction(async (tx) => {
+    await tx.session.update({
+      where: {
+        id: sessionId,
+      },
+      data: {
+        refreshToken: hash,
+      },
+    });
+
+    await tx.sessionActivity.create({
+      data: {
+        userId,
+        sessionId,
+        type: "REFRESHED",
+      },
+    });
   });
 };
 
@@ -134,16 +202,30 @@ export const update = async (sessionId: string, hash: string) => {
  * @param token - Raw refresh token received from the client.
  * @returns A promise that resolves when the session has been revoked.
  */
-export const revokeCurrentSession = async (token: string) => {
+export const revokeCurrentSession = async (
+  token: string,
+  currentSessionId: string,
+  userId: string,
+) => {
   const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
-  await prisma.session.updateMany({
-    where: {
-      refreshToken: tokenHash,
-    },
-    data: {
-      revoked: true,
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.session.updateMany({
+      where: {
+        refreshToken: tokenHash,
+      },
+      data: {
+        revoked: true,
+      },
+    });
+
+    await tx.sessionActivity.create({
+      data: {
+        userId,
+        sessionId: currentSessionId,
+        type: "REVOKED",
+      },
+    });
   });
 };
 
@@ -159,13 +241,23 @@ export const revokeCurrentSession = async (token: string) => {
  * @returns A promise that resolves once the session has been revoked.
  */
 export const revokeSession = async (sessionId: string, userId: string) => {
-  return await prisma.session.updateMany({
-    where: {
-      id: sessionId,
-      userId: userId,
-    },
-    data: {
-      revoked: true,
-    },
+  prisma.$transaction(async (tx) => {
+    await tx.session.updateMany({
+      where: {
+        id: sessionId,
+        userId: userId,
+      },
+      data: {
+        revoked: true,
+      },
+    });
+
+    await tx.sessionActivity.create({
+      data: {
+        userId,
+        sessionId: sessionId,
+        type: "REVOKED",
+      },
+    });
   });
 };

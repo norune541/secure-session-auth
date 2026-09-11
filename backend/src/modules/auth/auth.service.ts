@@ -42,6 +42,7 @@ export const signUser = async (userDto: SignupDto, metaDto: MetadataDto) => {
 
 export const resetPassword = async (
   userId: string,
+  currentSessionId: string,
   newPasswordDto: ResetPasswordDto,
 ) => {
   const user = await userService.findUserPasswordHashById(userId);
@@ -54,7 +55,11 @@ export const resetPassword = async (
   }
 
   const newPasswordhash = await bcrypt.hash(newPasswordDto.newPassword, 10);
-  await userService.updatePasswordHash(userId, newPasswordhash);
+  await userService.updatePasswordHash(
+    userId,
+    currentSessionId,
+    newPasswordhash,
+  );
 };
 
 export const authenticateUser = async (
@@ -116,7 +121,7 @@ export const refreshSession = async (
   });
   const { refreshToken, hash } = tokenService.signRefresh();
 
-  await sessionService.update(id, hash);
+  await sessionService.update(id, user.id, hash);
 
   return {
     accessToken,

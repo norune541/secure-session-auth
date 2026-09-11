@@ -6,6 +6,8 @@ import {
   getAllUserSessions,
   getUserSession,
   revokeSession,
+  handleAllSessionActivity,
+  handleSessionActivity,
 } from "./auth.controller";
 import { accessTokenAuth } from "../../common/middlewares/accessTokenAuth";
 
@@ -13,15 +15,13 @@ export const authRouter = Router();
 
 authRouter.post("/sessions", login);
 authRouter.get("/sessions", accessTokenAuth, getAllUserSessions);
+authRouter.get("/sessions/activity", accessTokenAuth, handleAllSessionActivity);
 authRouter.get(
-  "/sessions/:sessionId",
+  "/sessions/activity/:sessionId",
   accessTokenAuth,
-  getUserSession,
+  handleSessionActivity,
 );
-authRouter.delete("/sessions", logout);
-authRouter.delete(
-  "/sessions/:sessionId",
-  accessTokenAuth,
-  revokeSession,
-);
+authRouter.get("/sessions/:sessionId", accessTokenAuth, getUserSession);
+authRouter.delete("/sessions", accessTokenAuth, logout);
+authRouter.delete("/sessions/:sessionId", accessTokenAuth, revokeSession);
 authRouter.post("/sessions/refresh", handleRefresh);
