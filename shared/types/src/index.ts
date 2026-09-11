@@ -3,3 +3,4 @@ export type * from "./BackendError";
 export type * from "./AuthResponse";
 export type * from "./RefreshSessionResponse";
 export type * from "./UserResponse";
+export type * from "./ActivityResponse";
