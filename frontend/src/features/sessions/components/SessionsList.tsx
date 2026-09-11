@@ -27,7 +27,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
     <Button
       type="link"
       block
-      onClick={() => navigate(`/sessions/${item.userId}/${item.sessionId}`)}
+      onClick={() => navigate(`/sessions/${item.sessionId}`)}
       style={{
         padding: 20,
         paddingLeft: 0,

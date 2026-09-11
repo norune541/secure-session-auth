@@ -20,7 +20,7 @@ export function SessionsTable({ content }: { content: AllSessionsResponse }) {
     revoke:
       s.id === content.currentSession ? null : (
         <Button
-          onClick={() => handleRevoke(s.userId, s.id)}
+          onClick={() => handleRevoke(s.id)}
           loading={loadingId === s.id}
           style={{ width: "max-content" }}
         >
