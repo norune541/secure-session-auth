@@ -17,6 +17,8 @@ import type {
   Session,
   AuthResponse,
   RefreshSessionResponse,
+  ActivityResponse,
+  AllActivityResponse,
 } from "@repo/types";
 
 export const login = async (req: Request, res: Response<AuthResponse>) => {
@@ -165,17 +167,32 @@ export const revokeSession = async (req: Request, res: Response) => {
   return res.sendStatus(204);
 };
 
-export const handleAllSessionActivity = async (req: Request, res: Response) => {
+export const handleAllSessionActivity = async (
+  req: Request,
+  res: Response<AllActivityResponse>,
+) => {
   const activity = await sessionsService.getAllSessionActivity(req.user.id);
+  if (!activity || activity.length === 0) {
+    throw new ApiError("No session activities found", 404);
+  }
+
   return res.status(200).json(activity);
 };
 
-export const handleSessionActivity = async (req: Request, res: Response) => {
+export const handleSessionActivity = async (
+  req: Request,
+  res: Response<ActivityResponse>,
+) => {
   const sessionId = uuidSchema.parse(req.params.sessionId);
 
   const activity = await sessionsService.getSessionActivity(
     sessionId,
     req.user.id,
   );
+
+  if (!activity) {
+    throw new ApiError("Session activity not found", 404);
+  }
+
   return res.status(200).json(activity);
 };

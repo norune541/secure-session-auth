@@ -70,7 +70,9 @@ export const getUserSession = async (userId: string, sessionId: string) => {
 export const getAllSessionActivity = async (userId: string) => {
   return await prisma.sessionActivity.findMany({
     where: {
-      userId,
+      session: {
+        userId,
+      },
     },
 
     select: {
@@ -89,10 +91,12 @@ export const getAllSessionActivity = async (userId: string) => {
 };
 
 export const getSessionActivity = async (sessionId: string, userId: string) => {
-  return await prisma.sessionActivity.findMany({
+  return await prisma.sessionActivity.findFirst({
     where: {
       sessionId,
-      userId,
+      session: {
+        userId,
+      },
     },
 
     select: {
