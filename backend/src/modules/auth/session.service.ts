@@ -90,10 +90,10 @@ export const getAllSessionActivity = async (userId: string) => {
   });
 };
 
-export const getSessionActivity = async (sessionId: string, userId: string) => {
+export const getSessionActivity = async (id: string, userId: string) => {
   return await prisma.sessionActivity.findFirst({
     where: {
-      sessionId,
+      id,
       session: {
         userId,
       },

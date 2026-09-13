@@ -17,7 +17,7 @@ authRouter.post("/sessions", login);
 authRouter.get("/sessions", accessTokenAuth, getAllUserSessions);
 authRouter.get("/sessions/activity", accessTokenAuth, handleAllSessionActivity);
 authRouter.get(
-  "/sessions/activity/:sessionId",
+  "/sessions/activity/:activityId",
   accessTokenAuth,
   handleSessionActivity,
 );

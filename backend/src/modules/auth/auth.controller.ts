@@ -183,10 +183,10 @@ export const handleSessionActivity = async (
   req: Request,
   res: Response<ActivityResponse>,
 ) => {
-  const sessionId = uuidSchema.parse(req.params.sessionId);
+  const activityId = uuidSchema.parse(req.params.activityId);
 
   const activity = await sessionsService.getSessionActivity(
-    sessionId,
+    activityId,
     req.user.id,
   );
 
