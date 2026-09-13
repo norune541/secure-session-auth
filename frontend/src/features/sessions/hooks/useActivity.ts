@@ -10,7 +10,7 @@ export const useActivity = (activeId: string) => {
   const { handleError } = useNotificationError();
 
   useEffect(() => {
-    const fetchSessions = async () => {
+    const fetchActivity = async () => {
       setLoading(true);
       try {
         const activity = await getUserActivity(activeId);
@@ -23,7 +23,7 @@ export const useActivity = (activeId: string) => {
       }
     };
 
-    fetchSessions();
+    fetchActivity();
   }, []);
 
   return {

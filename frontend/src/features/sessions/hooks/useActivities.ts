@@ -12,7 +12,7 @@ export const useActivities = () => {
   const { handleError } = useNotificationError();
 
   useEffect(() => {
-    const fetchSessions = async () => {
+    const fetchActivities = async () => {
       setLoading(true);
       try {
         const activities = await getAllUserActivity();
@@ -25,7 +25,7 @@ export const useActivities = () => {
       }
     };
 
-    fetchSessions();
+    fetchActivities();
   }, []);
 
   return {
