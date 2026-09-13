@@ -8,6 +8,8 @@ import { SignupPage } from "./features/auth/pages/SignupPage";
 import { UserPage } from "./features/profile/pages/ProfilePage";
 import { SessionsPage } from "./features/sessions/pages/SessionsPage";
 import { RevokeSessionPage } from "./features/sessions/pages/RevokeSessionPage";
+import { ActivityPage } from "./features/sessions/pages/ActivityPage";
+import { ActivityDetailsPage } from "./features/sessions/pages/ActivityDetailsPage";
 
 export const App: React.FC = () => (
   <ConfigProvider
@@ -53,11 +55,14 @@ export const App: React.FC = () => (
             <Route path="/" element={<MeLayout />}>
               <Route index element={<UserPage />}></Route>
               <Route path="sessions" element={<SessionsPage />}></Route>
-              <Route
-                path="sessions/:sessionId"
-                element={<RevokeSessionPage />}
-              ></Route>
+              <Route path="sessions/activity" element={<ActivityPage />} />
             </Route>
+
+            <Route path="sessions/:sessionId" element={<RevokeSessionPage />} />
+            <Route
+              path="sessions/activity/:activityId"
+              element={<ActivityDetailsPage />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>
