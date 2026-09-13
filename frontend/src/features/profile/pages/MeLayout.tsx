@@ -40,12 +40,12 @@ export function MeLayout() {
         break;
       case "changePassword":
         setIsPasswordModalOpen(true);
+        break;
+      case "activityLogs":
+        navigate("sessions/activity");
     }
   };
 
-  // TODO: Implement session activity logs
-  // - Create `useActivityLogs` hook for data fetching
-  // - Design and build the Activity Logs page component
   const menuItems = (
     <Menu
       mode="inline"
