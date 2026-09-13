@@ -1,4 +1,12 @@
-import { Layout, Typography, Flex, Button, Skeleton } from "antd";
+import {
+  Layout,
+  Typography,
+  Flex,
+  Button,
+  Skeleton,
+  Tag,
+  ConfigProvider,
+} from "antd";
 import { ClockCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeviceIcon } from "../components/DeviceIcon";
@@ -11,27 +19,25 @@ const { Title, Text } = Typography;
 export function RevokeSessionPage() {
   const navigate = useNavigate();
   const { sessionId } = useParams();
-  if (!sessionId) {
-    navigate("/sessions");
-    return;
-  }
-  const { session, loading } = useSession(sessionId);
+
+  const { session, loading } = useSession(sessionId!);
   const { handleRevoke } = useRevokeSession();
+
+  if (!session) {
+    return null;
+  }
 
   const formatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
-  if (!session) {
-    return <Text>No sessions found</Text>;
-  }
-
   return loading ? (
     <Skeleton />
   ) : (
     <Content>
       <Button
+        style={{ margin: 15 }}
         icon={<LeftOutlined />}
         onClick={() => navigate("/sessions")}
       ></Button>
@@ -42,7 +48,7 @@ export function RevokeSessionPage() {
         style={{ textAlign: "left", margin: 20 }}
       >
         <DeviceIcon device={session.device} size={75} />
-        <Title level={3} style={{ color: "black" }}>
+        <Title level={3}>
           <Flex vertical style={{ textAlign: "center" }}>
             {session.device}
             <Text type="secondary" style={{ marginBottom: 20 }}>
@@ -55,18 +61,47 @@ export function RevokeSessionPage() {
             <ClockCircleOutlined style={{ marginRight: 10 }} />
             Signed in {formatter.format(new Date(session.createdAt))}
           </Text>
-          <Text>
+          <Text style={{ marginBottom: 30 }}>
             <ClockCircleOutlined style={{ marginRight: 10 }} />
             Last active {formatter.format(new Date(session.updatedAt))}
           </Text>
+          {!session.currentSessionId ? (
+            <ConfigProvider
+              theme={{
+                components: {
+                  Button: {
+                    colorText: "red",
+                    colorBorder: "red",
 
-          {!session.currentSessionId && (
-            <Button
-              style={{ color: "red", marginTop: 20 }}
-              onClick={() => handleRevoke(sessionId!)}
+                    defaultHoverBorderColor: "#ff4d4f",
+                    defaultHoverBg: "#fff1f0",
+
+                    defaultActiveColor: "#cf1322",
+                    defaultActiveBorderColor: "#cf1322",
+                    defaultActiveBg: "#fff1f0",
+                  },
+                },
+              }}
             >
-              Log out
-            </Button>
+              <Button
+                style={{ color: "red" }}
+                onClick={() => handleRevoke(sessionId!)}
+              >
+                Log out
+              </Button>
+            </ConfigProvider>
+          ) : (
+            <Tag
+              color="processing"
+              style={{
+                textAlign: "center",
+                padding: "4px 12px",
+                borderRadius: 16,
+                color: "rgb(73, 41, 255)",
+              }}
+            >
+              Current session
+            </Tag>
           )}
           <Text>
             If you don't recognize this device or didn't sign in from it, log
