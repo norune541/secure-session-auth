@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { Listy, Typography, Flex, Button, Layout, Divider } from "antd";
+import { Listy, Typography, Flex, Button, Layout, Divider, Tag } from "antd";
 import { DeviceIcon } from "./DeviceIcon";
 import type { AllSessionsResponse } from "@repo/types";
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 const { Title, Text } = Typography;
 
 export function SessionsList({ content }: { content: AllSessionsResponse }) {
@@ -14,15 +14,23 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
     timeStyle: "short",
   });
 
-  const items = content.sessions.map((s, index) => ({
-    key: index,
-    userId: s.userId,
-    sessionId: s.id,
-    createdAt: formatter.format(new Date(s.createdAt)),
-    expiresAt: formatter.format(new Date(s.expiresAt)),
-    device: s.device,
-    updatedAt: formatter.format(new Date(s.updatedAt)),
-  }));
+  const items = [...content.sessions]
+    .sort(
+      (a, b) =>
+        Number(b.id === content.currentSession) -
+        Number(a.id === content.currentSession),
+    )
+    .map((s, _) => ({
+      key: s.id,
+      userId: s.userId,
+      sessionId: s.id,
+      createdAt: formatter.format(new Date(s.createdAt)),
+      expiresAt: formatter.format(new Date(s.expiresAt)),
+      device: s.device,
+      updatedAt: formatter.format(new Date(s.updatedAt)),
+      currentSession: s.id === content.currentSession,
+    }));
+
   const renderItem = (item) => (
     <Button
       type="link"
@@ -30,6 +38,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       onClick={() => navigate(`/sessions/${item.sessionId}`)}
       style={{
         padding: 20,
+        paddingLeft: 0,
         height: "auto",
         display: "flex",
         justifyContent: "flex-start",
@@ -41,6 +50,19 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       <DeviceIcon device={item.device} size={30} />
 
       <Flex vertical style={{ marginLeft: 5 }}>
+        {item.currentSession && (
+          <Tag
+            style={{
+              background: "transparent",
+              color: "#15e495",
+              fontWeight: "bolder",
+              padding: 0,
+            }}
+          >
+            • Current session
+          </Tag>
+        )}
+
         <Text>{item.device}</Text>
         <Text type="secondary">Last active {item.updatedAt}</Text>
       </Flex>
@@ -48,14 +70,34 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
   );
 
   return (
-    <Content>
-      <Title level={3} style={{ marginBottom: 0, marginTop: 0 }}>
-        Sessions
-      </Title>
-      <Text>Tap a device to log out</Text>
-      <Divider></Divider>
+    <>
+      <Header style={{ padding: 0, marginLeft: 20 }}>
+        <Flex vertical gap={0}>
+          <Title level={2} style={{ margin: 0, lineHeight: 1.2 }}>
+            Security & access
+          </Title>
 
-      <Listy rowKey="key" itemRender={renderItem} items={items}></Listy>
-    </Content>
+          <Text type="secondary">Tap a device to log out</Text>
+        </Flex>
+      </Header>
+
+      <Content style={{ marginLeft: 20 }}>
+        <Divider></Divider>
+        <div style={{ marginBottom: 20 }}>
+          <Title level={4} style={{ marginBottom: 0 }}>
+            Active sessions
+          </Title>
+          <Text type="secondary">
+            Manage the devices logged in your account
+          </Text>
+        </div>
+        <Listy
+          height={600}
+          rowKey="key"
+          itemRender={renderItem}
+          items={items}
+        ></Listy>
+      </Content>
+    </>
   );
 }

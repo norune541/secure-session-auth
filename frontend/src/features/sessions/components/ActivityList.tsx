@@ -39,6 +39,7 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
       onClick={() => navigate(`/sessions/activity/${item.activityId}`)}
       style={{
         padding: 10,
+        paddingLeft: 0,
         height: "auto",
         display: "flex",
         justifyContent: "flex-start",
@@ -60,18 +61,18 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
   );
 
   return (
-    <Content>
-      <Title level={3} style={{ marginBottom: 10, marginTop: 0 }}>
+    <Content style={{ marginLeft: 20 }}>
+      <Title level={2} style={{ margin: 0 }}>
         Activities
       </Title>
 
-      <Text>
+      <Text type="secondary">
         View the history of sessions and actions associated with your account.
       </Text>
 
       <Divider />
 
-      <Listy rowKey="key" itemRender={renderItem} items={items} />
+      <Listy height={600} rowKey="key" itemRender={renderItem} items={items} />
     </Content>
   );
 }

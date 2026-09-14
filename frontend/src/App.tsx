@@ -21,6 +21,9 @@ export const App: React.FC = () => (
         borderRadius: 18,
       },
       components: {
+        Layout: {
+          headerBg: "#ffff",
+        },
         Button: {
           colorPrimary: "#100068",
           colorPrimaryHover: "#4929ff",
@@ -32,7 +35,7 @@ export const App: React.FC = () => (
           colorBgContainer: "#f8f8f8",
         },
         Typography: {
-          colorTextHeading: "#4929ff",
+          colorTextHeading: "black",
         },
         Listy: {
           itemPaddingBlock: 0,
