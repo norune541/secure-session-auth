@@ -5,6 +5,7 @@ import { DeviceIcon } from "./DeviceIcon";
 import { formatActivityType } from "./formatActivityType";
 
 import type { AllActivityResponse } from "@repo/types";
+import { Sparkline } from "./Sparkline";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -61,18 +62,28 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
   );
 
   return (
-    <Content style={{ marginLeft: 20 }}>
-      <Title level={2} style={{ margin: 0 }}>
-        Activities
-      </Title>
+    <Content>
+      <div style={{ paddingLeft: 15 }}>
+        <Title level={2} style={{ margin: 0 }}>
+          Activities
+        </Title>
+        <Text type="secondary">
+          View the history of sessions and actions associated with your account.
+        </Text>
+        <Divider />
+      </div>
 
-      <Text type="secondary">
-        View the history of sessions and actions associated with your account.
-      </Text>
+      <Sparkline />
 
-      <Divider />
-
-      <Listy height={600} rowKey="key" itemRender={renderItem} items={items} />
+      <div style={{ paddingLeft: 15 }}>
+        <Listy
+          style={{ marginTop: 20 }}
+          height={260}
+          rowKey="key"
+          itemRender={renderItem}
+          items={items}
+        />
+      </div>
     </Content>
   );
 }
