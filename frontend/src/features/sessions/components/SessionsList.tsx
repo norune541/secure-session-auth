@@ -30,7 +30,6 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       onClick={() => navigate(`/sessions/${item.sessionId}`)}
       style={{
         padding: 20,
-        paddingLeft: 0,
         height: "auto",
         display: "flex",
         justifyContent: "flex-start",
@@ -43,7 +42,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
 
       <Flex vertical style={{ marginLeft: 5 }}>
         <Text>{item.device}</Text>
-        <Text>Last active {item.updatedAt}</Text>
+        <Text type="secondary">Last active {item.updatedAt}</Text>
       </Flex>
     </Button>
   );

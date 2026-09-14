@@ -38,8 +38,7 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
       block
       onClick={() => navigate(`/sessions/activity/${item.activityId}`)}
       style={{
-        padding: 20,
-        paddingLeft: 0,
+        padding: 10,
         height: "auto",
         display: "flex",
         justifyContent: "flex-start",
