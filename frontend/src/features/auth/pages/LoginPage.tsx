@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { GoogleIcon } from "../../../common/assets/icons/GoogleIcon";
 import { FacebookIcon } from "../../../common/assets/icons/FacebookIcon";
 import { useLogin } from "../hooks/useLogin";
+import { ActivitiesMockup } from "../components/ActivitiesMockup";
 
 const { Title, Text } = Typography;
 const { useBreakpoint } = Grid;
@@ -33,23 +34,48 @@ export function LoginPage() {
         align="center"
         style={{
           height: "100dvh",
-          padding: "0 20px",
+          padding: "0px 20px",
         }}
       >
-        <Title level={2} style={{ marginBottom: "4px" }}>
-          Welcome Back
-        </Title>
-
-        <Text
-          type="secondary"
+        <div
           style={{
-            display: "block",
-            marginBottom: "32px",
-            textAlign: "center",
+            width: "100%",
+            maxWidth: 500,
+            textAlign: "left",
+            marginBottom: 30,
           }}
         >
-          Enter your credentials to continue to your dashboard
-        </Text>
+          <Flex align="flex-start" gap={8}>
+            <svg
+              fill="none"
+              height="48"
+              viewBox="0 0 37 48"
+              width="30"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                clipRule="evenodd"
+                d="m12.8841 4.30945-6.8842 3.97574 6.8891 3.97661 6.8862-3.97575zm8.8919 7.44025-6.887 3.9762-.0007 7.9532 6.8877-3.9771zm2 11.4164-6.8879 3.9772 6.8889 3.9765 6.8871-3.9763zm8.8879 7.4416-6.8868 3.9761v7.9522l6.8868-3.9761zm-10.8868 11.9287v-7.9525l-6.8891-3.9766v7.9525zm-10.8888-18.8569-6.8883-3.9775v-7.9526l6.889 3.9765zm-.0003 4.6187-9.38814-5.4209c-.928127-.5359-1.49986-1.5262-1.49986-2.598v-11.99368c0-.71444.381106-1.37463.999789-1.73193l10.383811-5.996798c.9281-.5359626 2.0716-.5361538 2.9998-.000505l10.3922 5.996973c.6193.3572 1.0004 1.0176 1.0004 1.73226v11.41638l9.888 5.7096c.6188.3573.9999 1.0176.9999 1.732v11.9937c0 1.0718-.5711 2.0621-1.5 2.598l-10.3868 5.9969c-.6187.3572-1.381.0001-1.9998.0001l-10.3891-5.9969c-.9283-.5359-1.5002-1.5263-1.5002-2.5982z"
+                fill="#ea580c"
+                fillRule="evenodd"
+              />
+            </svg>
+
+            <Title level={3} style={{ marginTop: 8 }}>
+              Clearpoint
+            </Title>
+          </Flex>
+          <Title
+            level={isDesktop ? 1 : 2}
+            style={{ marginBottom: "4px", color: "black" }}
+          >
+            Welcome Back
+          </Title>
+
+          <Text>
+            New to Clearpoint? <Link to={"/signup"}>Create an account</Link>
+          </Text>
+        </div>
 
         <Form
           layout="vertical"
@@ -62,7 +88,6 @@ export function LoginPage() {
         >
           <Form.Item
             name="login"
-            label="Email or Phone"
             rules={[
               {
                 required: true,
@@ -75,7 +100,6 @@ export function LoginPage() {
 
           <Form.Item
             name="password"
-            label="Password"
             rules={[
               {
                 required: true,
@@ -118,15 +142,11 @@ export function LoginPage() {
               loading={loading}
               style={{
                 padding: "18px",
-                borderRadius: 18,
+                borderRadius: 7,
               }}
             >
               Sign in
             </Button>
-          </Form.Item>
-
-          <Form.Item style={{ textAlign: "left" }}>
-            <Link to="/signup">Do not have an account?</Link>
           </Form.Item>
 
           <Divider style={{ margin: "24px 0" }}>Or continue with</Divider>
@@ -170,10 +190,26 @@ export function LoginPage() {
           style={{
             flex: 1,
             margin: 12,
-            background: "#0082aa",
+            background: "#0B132B",
             borderRadius: 16,
           }}
-        />
+        >
+          <Flex
+            vertical
+            justify="center"
+            align="left"
+            style={{ textAlign: "left", padding: "20px 50px" }}
+          >
+            <Title level={2} style={{ color: "#ffff", fontWeight: "lighter" }}>
+              Your authentication layer, fully visible
+            </Title>
+            <Text style={{ color: "#ffff" }}>
+              Our automated timeline highlights expired tokens, suspicious
+              reuse, and user activity patterns automatically.
+            </Text>
+            <ActivitiesMockup />
+          </Flex>
+        </div>
       )}
     </Flex>
   );

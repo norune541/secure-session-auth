@@ -31,9 +31,9 @@ export const App: React.FC = () => (
           colorPrimaryBorderHover: "#c2410c",
         },
         Input: {
-          borderRadius: 18,
+          borderRadius: 7,
           paddingBlock: 8,
-          colorBgContainer: "#f8f8f8",
+          colorBgContainer: "#ffff",
         },
         Typography: {
           colorTextHeading: "#ea580c",
