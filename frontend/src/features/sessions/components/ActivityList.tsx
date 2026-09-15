@@ -3,9 +3,8 @@ import { Listy, Typography, Flex, Button, Layout, Divider } from "antd";
 
 import { DeviceIcon } from "./DeviceIcon";
 import { formatActivityType } from "./formatActivityType";
-
-import type { AllActivityResponse } from "@repo/types";
 import { Sparkline } from "./Sparkline";
+import type { AllActivityResponse } from "@repo/types";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -73,7 +72,7 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
         <Divider />
       </div>
 
-      <Sparkline />
+      <Sparkline data={content} />
 
       <div style={{ paddingLeft: 15 }}>
         <Listy
