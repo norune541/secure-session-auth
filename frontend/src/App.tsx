@@ -15,19 +15,20 @@ export const App: React.FC = () => (
   <ConfigProvider
     theme={{
       token: {
-        colorLink: "#100068",
-        colorLinkHover: "#4929ff",
+        colorPrimary: "#ea580c",
+        colorLink: "#ea580c",
+        colorLinkHover: "#c2410c",
         colorBgLayout: "#ffffff",
         borderRadius: 18,
       },
       components: {
         Layout: {
-          headerBg: "#ffff",
+          headerBg: "#ffffff",
         },
         Button: {
-          colorPrimary: "#100068",
-          colorPrimaryHover: "#4929ff",
-          colorPrimaryBorderHover: "#4929ff",
+          colorPrimary: "#ea580c",
+          colorPrimaryHover: "#c2410c",
+          colorPrimaryBorderHover: "#c2410c",
         },
         Input: {
           borderRadius: 18,
@@ -35,7 +36,7 @@ export const App: React.FC = () => (
           colorBgContainer: "#f8f8f8",
         },
         Typography: {
-          colorTextHeading: "black",
+          colorTextHeading: "#ea580c",
         },
         Listy: {
           itemPaddingBlock: 0,
@@ -53,11 +54,11 @@ export const App: React.FC = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />}></Route>
+          <Route path="/signup" element={<SignupPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<MeLayout />}>
-              <Route index element={<UserPage />}></Route>
-              <Route path="sessions" element={<SessionsPage />}></Route>
+              <Route index element={<UserPage />} />
+              <Route path="sessions" element={<SessionsPage />} />
               <Route path="sessions/activity" element={<ActivityPage />} />
             </Route>
 

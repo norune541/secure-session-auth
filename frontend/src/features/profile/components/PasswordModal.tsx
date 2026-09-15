@@ -15,7 +15,7 @@ export function PasswordModal({ isOpen, onClose }) {
     if (info.props.title) {
       return {
         title: {
-          color: "#4929ff",
+          color: "#ea580c",
         },
       };
     }

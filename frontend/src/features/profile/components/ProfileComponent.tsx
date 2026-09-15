@@ -129,9 +129,7 @@ export function ProfileComponent({ content }: { content: User }) {
           paddingRight: "16px",
         }}
       >
-        <Title level={3} style={{ color: "#4929ff" }}>
-          Personal Information
-        </Title>
+        <Title level={3}>Personal Information</Title>
         <Divider />
         <Descriptions
           items={items}

@@ -84,7 +84,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       <Content style={{ marginLeft: 20 }}>
         <Divider></Divider>
         <div style={{ marginBottom: 20 }}>
-          <Title level={4} style={{ marginBottom: 0 }}>
+          <Title level={4} style={{ marginBottom: 0, color: "black" }}>
             Active sessions
           </Title>
           <Text type="secondary">
