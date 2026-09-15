@@ -7,6 +7,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Legend,
 } from "recharts";
 import type { AllActivityResponse } from "@repo/types";
 
@@ -200,6 +201,55 @@ function TooltipContent({
   );
 }
 
+function StaticLegend() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        gap: 10,
+        paddingBottom: 10,
+      }}
+    >
+      {ACTIVITY_TYPES.map((type) => {
+        const config = ACTIVITY_CONFIG[type];
+
+        return (
+          <div
+            key={type}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: config.color,
+                display: "inline-block",
+              }}
+            />
+            <span
+              style={{
+                color: "#4B5563",
+                fontSize: 12,
+                fontWeight: 500,
+              }}
+            >
+              {config.name}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function Sparkline({ data }: { data: AllActivityResponse }) {
   const { chartData, visibleTypes } = useMemo(() => {
     const now = new Date();
@@ -257,7 +307,7 @@ export function Sparkline({ data }: { data: AllActivityResponse }) {
     <div
       style={{
         width: "100%",
-        height: 180,
+        height: 200,
       }}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -331,6 +381,7 @@ export function Sparkline({ data }: { data: AllActivityResponse }) {
               strokeDasharray: "4 4",
             }}
           />
+          <Legend position="top" content={<StaticLegend />} />
 
           {visibleTypes.map((type) => {
             const { name, color } = ACTIVITY_CONFIG[type];
