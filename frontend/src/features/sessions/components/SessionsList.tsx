@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Listy, Typography, Flex, Button, Layout, Divider, Tag } from "antd";
+import { Listy, Typography, Flex, Button, Layout, Tag } from "antd";
 import { DeviceIcon } from "./DeviceIcon";
 import type { AllSessionsResponse } from "@repo/types";
 
@@ -82,15 +82,6 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       </Header>
 
       <Content style={{ marginLeft: 20 }}>
-        <Divider></Divider>
-        <div style={{ marginBottom: 20 }}>
-          <Title level={4} style={{ marginBottom: 0, color: "black" }}>
-            Active sessions
-          </Title>
-          <Text type="secondary">
-            Manage the devices logged in your account
-          </Text>
-        </div>
         <Listy
           height={600}
           rowKey="key"

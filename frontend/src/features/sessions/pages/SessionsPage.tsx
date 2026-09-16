@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
-import { SessionsList } from "../components/SessionsList";
 import { useSessions } from "../hooks/useSessions";
+import { SessionsList } from "../components/SessionsList";
 
 export function SessionsPage() {
   const { sessions, loading } = useSessions();
@@ -9,7 +9,9 @@ export function SessionsPage() {
     return <Skeleton />;
   }
 
-  if (sessions) {
-    return <SessionsList content={sessions} />;
+  if (!sessions) {
+    return null;
   }
+
+  return <SessionsList content={sessions} />;
 }

@@ -6,10 +6,11 @@ import { MeLayout } from "./features/profile/pages/MeLayout";
 import { LoginPage } from "./features/auth/pages/LoginPage";
 import { SignupPage } from "./features/auth/pages/SignupPage";
 import { UserPage } from "./features/profile/pages/ProfilePage";
-import { SessionsPage } from "./features/sessions/pages/SessionsPage";
+import { DashboardPage } from "./features/sessions/pages/DashboardPage";
 import { RevokeSessionPage } from "./features/sessions/pages/RevokeSessionPage";
 import { ActivityPage } from "./features/sessions/pages/ActivityPage";
 import { ActivityDetailsPage } from "./features/sessions/pages/ActivityDetailsPage";
+import { SessionsPage } from "./features/sessions/pages/SessionsPage";
 
 export const App: React.FC = () => (
   <ConfigProvider
@@ -62,8 +63,10 @@ export const App: React.FC = () => (
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<MeLayout />}>
               <Route index element={<UserPage />} />
-              <Route path="sessions" element={<SessionsPage />} />
-              <Route path="sessions/activity" element={<ActivityPage />} />
+              <Route path="sessions" element={<DashboardPage />}>
+                <Route index element={<SessionsPage />} />
+                <Route path="activity" element={<ActivityPage />} />
+              </Route>
             </Route>
 
             <Route path="sessions/:sessionId" element={<RevokeSessionPage />} />
