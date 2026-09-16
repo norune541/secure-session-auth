@@ -29,6 +29,7 @@ export const App: React.FC = () => (
           colorPrimary: "#ea580c",
           colorPrimaryHover: "#c2410c",
           colorPrimaryBorderHover: "#c2410c",
+          borderRadius: 7,
         },
         Input: {
           borderRadius: 7,
@@ -41,6 +42,9 @@ export const App: React.FC = () => (
         Listy: {
           itemPaddingBlock: 0,
           itemPaddingInline: 0,
+        },
+        Menu: {
+          itemBorderRadius: 7,
         },
       },
     }}

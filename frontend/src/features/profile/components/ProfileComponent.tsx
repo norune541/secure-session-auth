@@ -1,82 +1,48 @@
-import { useState } from "react";
 import {
   Layout,
   Flex,
   Typography,
   Divider,
   Avatar,
-  Descriptions,
-  Badge,
   Grid,
+  Menu,
+  Form,
+  Input,
+  Button,
+  Upload,
 } from "antd";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 
-import { PatchUserModal } from "./PatchUserModal";
-import type { DescriptionsProps } from "antd";
+import { SecurityProfile } from "./SecurityProfile";
+import { useProfileNavigation } from "../hooks/useProfile";
+import type { MenuProps } from "antd";
 import type { User } from "@repo/types";
 
 const { Header, Content } = Layout;
 const { Text, Title } = Typography;
 const { useBreakpoint } = Grid;
 
+type MenuItem = Required<MenuProps>["items"][number];
+
 export function ProfileComponent({ content }: { content: User }) {
-  const [isChangeUserOpen, setIsChangeUserOpen] = useState(false);
   const screens = useBreakpoint();
   const isDesktop = screens.md;
 
-  const mobileStyles: React.CSSProperties = {
-    background: "#f8f8f8",
-    width: "100%",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 16,
-  };
-
-  const items: DescriptionsProps["items"] = [
+  const { current, onClick, form, loading, handleSubmit } =
+    useProfileNavigation();
+  const menuItems: MenuItem[] = [
     {
-      key: "1",
-      label: "First Name",
-      children: (
-        <span style={!isDesktop ? mobileStyles : undefined}>
-          {content.firstName}
-        </span>
-      ),
+      label: "Profile",
+      key: "profile",
     },
     {
-      key: "2",
-      label: "Last Name",
-      children: (
-        <span style={!isDesktop ? mobileStyles : undefined}>
-          {content.lastName}
-        </span>
-      ),
-    },
-    {
-      key: "3",
-      label: "Email",
-      children: (
-        <span style={!isDesktop ? mobileStyles : undefined}>
-          {content.email}
-        </span>
-      ),
-    },
-    {
-      key: "4",
-      label: "Phone",
-      children: (
-        <span style={!isDesktop ? mobileStyles : undefined}>
-          {content.phone}
-        </span>
-      ),
-    },
-    {
-      key: "5",
-      label: "Role",
-      children: (
-        <span style={!isDesktop ? mobileStyles : undefined}>
-          {content.role}
-        </span>
-      ),
+      label: "Security",
+      key: "security",
     },
   ];
 
@@ -84,35 +50,21 @@ export function ProfileComponent({ content }: { content: User }) {
     <Layout>
       <Header
         style={{
-          background: "#fff",
           height: "fit-content",
-          borderRadius: "14px",
           paddingLeft: 28,
         }}
       >
-        <Flex gap="large" style={{ paddingLeft: 0 }} align="center">
-          <div style={{ cursor: "pointer" }}>
-            <Badge
-              count={<EditOutlined style={{ fontSize: 20 }} />}
-              offset={[-10, 60]}
-              style={{
-                background: "#fff",
-                borderRadius: 16,
-                padding: 5,
-              }}
-              onClick={() => setIsChangeUserOpen(true)}
-            >
-              {/* TODO: add profile picture */}
-              <Avatar size={72} icon={<UserOutlined />} />
-            </Badge>
-          </div>
-          {
-            <PatchUserModal
-              user={content}
-              isOpen={isChangeUserOpen}
-              onClose={() => setIsChangeUserOpen(false)}
-            />
-          }
+        <Menu
+          mode="horizontal"
+          onClick={onClick}
+          items={menuItems}
+          style={{ marginBottom: 20 }}
+        />
+
+        <Flex gap="large" align="center">
+          {/* TODO: add profile picture */}
+          <Avatar size={72} icon={<UserOutlined />} />
+
           <Flex vertical gap="small">
             <Text>
               {content.firstName} {content.lastName}
@@ -121,26 +73,133 @@ export function ProfileComponent({ content }: { content: User }) {
           </Flex>
         </Flex>
       </Header>
-      <Content
-        style={{
-          marginTop: "20px",
-          borderRadius: "14px",
-          paddingLeft: "10px",
-          paddingRight: "16px",
-        }}
-      >
-        <Title level={3}>Personal Information</Title>
-        <Divider />
-        <Descriptions
-          items={items}
-          layout="vertical"
-          size={isDesktop ? "default" : "small"}
-          styles={{
-            label: { paddingBottom: 0, fontWeight: "bold" },
-            content: { paddingBottom: 0 },
+
+      {current === "profile" && (
+        <Content
+          style={{
+            marginTop: 20,
+            borderRadius: 14,
+            paddingLeft: 28,
+            paddingRight: 16,
+            maxWidth: 1000,
           }}
-        />
-      </Content>
+        >
+          <Title level={3}>Personal Information</Title>
+
+          <Divider />
+
+          <Form
+            requiredMark={false}
+            form={form}
+            layout="vertical"
+            onFinish={handleSubmit}
+            initialValues={{
+              firstName: content.firstName,
+              lastName: content.lastName,
+              phone: content.phone,
+              email: content.email,
+            }}
+          >
+            <Flex vertical gap={20}>
+              <Flex gap={20} wrap={!isDesktop ? "wrap" : "nowrap"}>
+                <Form.Item
+                  name="firstName"
+                  label="First name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your first name",
+                    },
+                  ]}
+                  style={{
+                    flex: 1,
+                    minWidth: isDesktop ? 0 : "100%",
+                    margin: 0,
+                  }}
+                >
+                  <Input placeholder="First name" prefix={<UserOutlined />} />
+                </Form.Item>
+
+                <Form.Item
+                  name="lastName"
+                  label="Last name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your last name",
+                    },
+                  ]}
+                  style={{
+                    flex: 1,
+                    minWidth: isDesktop ? 0 : "100%",
+                    margin: 0,
+                  }}
+                >
+                  <Input placeholder="Last name" prefix={<UserOutlined />} />
+                </Form.Item>
+              </Flex>
+
+              <Flex gap={20} wrap={!isDesktop ? "wrap" : "nowrap"}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  style={{
+                    flex: 1,
+                    minWidth: isDesktop ? 0 : "100%",
+                    margin: 0,
+                  }}
+                  rules={[
+                    { required: true, message: "Please write your email!" },
+                    { type: "email", message: "Please write correct email!" },
+                  ]}
+                >
+                  <Input placeholder="Email" prefix={<MailOutlined />} />
+                </Form.Item>
+
+                <Form.Item
+                  name="phone"
+                  label="Phone"
+                  style={{
+                    flex: 1,
+                    minWidth: isDesktop ? 0 : "100%",
+                    margin: 0,
+                  }}
+                  rules={[
+                    { required: true, message: "Please write your phone!" },
+                  ]}
+                >
+                  <Input placeholder="Phone" prefix={<PhoneOutlined />} />
+                </Form.Item>
+              </Flex>
+              <Form.Item
+                label="Profile picture"
+                style={{ margin: 0, marginTop: 12 }}
+              >
+                <Flex gap={20} align="center">
+                  <Upload>
+                    <Button icon={<UploadOutlined />}>Upload</Button>
+                  </Upload>
+
+                  <Avatar icon={<UserOutlined />} />
+                </Flex>
+              </Form.Item>
+              <Divider />
+
+              <Flex justify="start">
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  loading={loading}
+                  style={{ marginBottom: 15 }}
+                >
+                  Save changes
+                </Button>
+              </Flex>
+            </Flex>
+          </Form>
+        </Content>
+      )}
+      {current === "security" && <SecurityProfile />}
     </Layout>
   );
 }

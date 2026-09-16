@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid } from "antd";
 import type { MenuProps } from "antd";
-import {
-  UserOutlined,
-  LockOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined } from "@ant-design/icons";
 
-import { SessionsIcon } from "../../../common/assets/icons/SessionsIcon";
+import { DashboardIcon } from "../../../common/assets/icons/DashboardIcon";
 
 const { useBreakpoint } = Grid;
 
@@ -41,54 +37,26 @@ export function useMe() {
     setMobileMenuOpen(false);
 
     switch (key) {
-      case "user":
+      case "settings":
         navigate("/");
         break;
 
-      case "sessions":
+      case "dashboard":
         navigate("/sessions");
-        break;
-
-      case "changePassword":
-        setIsPasswordModalOpen(true);
-        break;
-
-      case "activityLogs":
-        navigate("sessions/activity");
         break;
     }
   };
 
   const menuItems: MenuProps["items"] = [
     {
-      key: "mainGroup",
-      label: "Main",
-      type: "group",
+      key: "settings",
+      icon: <SettingOutlined />,
+      label: "Settings",
     },
     {
-      key: "user",
-      icon: <UserOutlined />,
-      label: "User",
-    },
-    {
-      key: "sessions",
-      icon: <SessionsIcon />,
-      label: "Sessions",
-    },
-    {
-      key: "settingsGroup",
-      label: "Security",
-      type: "group",
-    },
-    {
-      key: "changePassword",
-      icon: <LockOutlined />,
-      label: "Change Password",
-    },
-    {
-      key: "activityLogs",
-      icon: <ClockCircleOutlined />,
-      label: "Activity Logs",
+      key: "dashboard",
+      icon: <DashboardIcon />,
+      label: "Dashboard",
     },
   ];
 

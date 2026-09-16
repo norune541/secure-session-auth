@@ -31,19 +31,17 @@ export function MeLayout() {
 
   const selectedKey =
     location.pathname === "/"
-      ? "user"
+      ? "settings"
       : location.pathname === "/sessions"
-        ? "sessions"
-        : location.pathname === "/sessions/activity"
-          ? "activityLogs"
-          : null;
+        ? "dashboard"
+        : null;
 
   const menu = (
     <Menu
       mode="inline"
       selectedKeys={selectedKey ? [selectedKey] : []}
       onClick={handleMenu}
-      style={{ border: 0 }}
+      style={{ border: 0, marginTop: 20 }}
       items={menuItems}
     />
   );
@@ -63,6 +61,7 @@ export function MeLayout() {
           style={{
             background: "#ffff",
             borderRight: "1px solid #F0F0F0",
+            marginTop: 15,
           }}
         >
           <Button
@@ -72,7 +71,7 @@ export function MeLayout() {
             style={{
               position: "absolute",
               right: -16,
-              top: 70,
+              top: 45,
               zIndex: 10,
               fontSize: "20px",
               width: 32,
