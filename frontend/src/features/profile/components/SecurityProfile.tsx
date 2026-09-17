@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Typography,
   Button,
@@ -9,12 +10,14 @@ import {
 } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { useChangePassword } from "../hooks/useChangePassword";
+import { LogoutModal } from "./LogoutModal";
 
 const { Title } = Typography;
 const { Content } = Layout;
 
 export function SecurityProfile() {
   const { loading, handleSubmit, contextHolder } = useChangePassword(() => {});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -158,7 +161,13 @@ export function SecurityProfile() {
               },
             }}
           >
-            <Button>Logout</Button>
+            <Button onClick={() => setIsModalOpen(true)}>Logout</Button>
+            <LogoutModal
+              isOpen={isModalOpen}
+              onClose={() => {
+                setIsModalOpen(false);
+              }}
+            />
           </ConfigProvider>
         </Flex>
       </Flex>
