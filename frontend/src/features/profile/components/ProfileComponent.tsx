@@ -2,7 +2,6 @@ import {
   Layout,
   Flex,
   Typography,
-  Divider,
   Avatar,
   Grid,
   Menu,
@@ -80,20 +79,22 @@ export function ProfileComponent({ content }: { content: User }) {
       {current === "profile" && (
         <Content
           style={{
-            marginTop: 20,
             padding: "0 28px",
             maxWidth: 1000,
           }}
         >
           <Title level={3}>Personal Information</Title>
 
-          <Divider />
-
           <Form
             requiredMark={false}
             form={form}
             layout="vertical"
             onFinish={handleSubmit}
+            style={{
+              border: "1px solid #F0F0F0",
+              borderRadius: 8,
+              padding: 20,
+            }}
             initialValues={{
               firstName: content.firstName,
               lastName: content.lastName,
@@ -184,14 +185,13 @@ export function ProfileComponent({ content }: { content: User }) {
                   <Avatar icon={<UserOutlined />} />
                 </Flex>
               </Form.Item>
-              <Divider />
 
               <Flex justify="start">
                 <Button
                   htmlType="submit"
                   type="primary"
                   loading={loading}
-                  style={{ marginBottom: 15 }}
+                  style={{ marginTop: 7 }}
                 >
                   Save changes
                 </Button>

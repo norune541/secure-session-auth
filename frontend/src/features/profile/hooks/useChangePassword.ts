@@ -5,7 +5,7 @@ import { ClientError } from "../../../common/error/ClientError";
 import { useNotificationError } from "../../../common/hooks/useNotificationError";
 import type { ValuesChangePassword } from "../types/ValuesChangePassword";
 
-export function usePasswordModal(onClose) {
+export function useChangePassword(onClose) {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 

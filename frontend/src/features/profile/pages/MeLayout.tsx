@@ -6,7 +6,6 @@ import {
   RightCircleOutlined,
 } from "@ant-design/icons";
 
-import { PasswordModal } from "../components/PasswordModal";
 import { useMe } from "../hooks/useMe";
 
 const { Title } = Typography;
@@ -17,7 +16,6 @@ export function MeLayout() {
   const {
     collapsed,
     showSidebarText,
-    isPasswordModalOpen,
     mobileMenuOpen,
     isDesktop,
     menuItems,
@@ -26,7 +24,6 @@ export function MeLayout() {
     handleCollapse,
     handleOpenMobileMenu,
     handleCloseMobileMenu,
-    handleClosePasswordModal,
   } = useMe();
 
   const selectedKey =
@@ -48,11 +45,6 @@ export function MeLayout() {
 
   return (
     <Layout style={{ minHeight: "100dvh" }}>
-      <PasswordModal
-        isOpen={isPasswordModalOpen}
-        onClose={handleClosePasswordModal}
-      />
-
       {isDesktop && (
         <Sider
           trigger={null}
