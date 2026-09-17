@@ -51,14 +51,17 @@ export function ProfileComponent({ content }: { content: User }) {
       <Header
         style={{
           height: "fit-content",
-          paddingLeft: 28,
+          padding: "0 28px",
         }}
       >
         <Menu
           mode="horizontal"
           onClick={onClick}
           items={menuItems}
-          style={{ marginBottom: 20 }}
+          defaultSelectedKeys={["profile"]}
+          style={{
+            marginBottom: 20,
+          }}
         />
 
         <Flex gap="large" align="center">
@@ -78,9 +81,7 @@ export function ProfileComponent({ content }: { content: User }) {
         <Content
           style={{
             marginTop: 20,
-            borderRadius: 14,
-            paddingLeft: 28,
-            paddingRight: 16,
+            padding: "0 28px",
             maxWidth: 1000,
           }}
         >

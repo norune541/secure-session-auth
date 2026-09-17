@@ -1,13 +1,16 @@
 import { Menu } from "antd";
 import { Link, Outlet } from "react-router-dom";
 
-export function DashboardPage() {
+export function SessionsNavigation() {
   return (
     <>
       <Menu
-        style={{ border: 0, marginBottom: 20 }}
-
         mode="horizontal"
+        style={{
+          marginTop: 6,
+          marginLeft: 25,
+          marginBottom: 15,
+        }}
         defaultSelectedKeys={["sessions"]}
         items={[
           {

@@ -62,7 +62,7 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
 
   return (
     <Content>
-      <div style={{ paddingLeft: 15 }}>
+      <div style={{ paddingLeft: 25 }}>
         <Title level={2} style={{ margin: 0 }}>
           Activities
         </Title>

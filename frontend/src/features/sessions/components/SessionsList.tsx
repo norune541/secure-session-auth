@@ -81,7 +81,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
         </Flex>
       </Header>
 
-      <Content style={{ marginLeft: 20 }}>
+      <Content style={{ marginLeft: 25 }}>
         <Listy
           height={600}
           rowKey="key"
