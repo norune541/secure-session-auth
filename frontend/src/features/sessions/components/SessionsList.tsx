@@ -1,6 +1,20 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Listy, Typography, Flex, Button, Layout, Tag } from "antd";
+
+import {
+  Listy,
+  Typography,
+  Flex,
+  Button,
+  Layout,
+  Tag,
+  Grid,
+  Modal,
+} from "antd";
+
 import { DeviceIcon } from "./DeviceIcon";
+import { RevokeSessionModal } from "./RevokeSessionModal";
+
 import type { AllSessionsResponse } from "@repo/types";
 
 const { Content, Header } = Layout;
@@ -8,6 +22,11 @@ const { Title, Text } = Typography;
 
 export function SessionsList({ content }: { content: AllSessionsResponse }) {
   const navigate = useNavigate();
+  const { md: isDesktop } = Grid.useBreakpoint();
+
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
 
   const formatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
@@ -20,7 +39,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
         Number(b.id === content.currentSession) -
         Number(a.id === content.currentSession),
     )
-    .map((s, _) => ({
+    .map((s) => ({
       key: s.id,
       userId: s.userId,
       sessionId: s.id,
@@ -29,13 +48,27 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
       device: s.device,
       updatedAt: formatter.format(new Date(s.updatedAt)),
       currentSession: s.id === content.currentSession,
+
+      session: s,
     }));
 
-  const renderItem = (item) => (
+  const selectedSession = items.find(
+    (item) => item.sessionId === selectedSessionId,
+  )?.session;
+
+  const handleSessionClick = (sessionId: string) => {
+    if (isDesktop) {
+      setSelectedSessionId(sessionId);
+    } else {
+      navigate(`/sessions/${sessionId}`);
+    }
+  };
+
+  const renderItem = (item: (typeof items)[number]) => (
     <Button
       type="link"
       block
-      onClick={() => navigate(`/sessions/${item.sessionId}`)}
+      onClick={() => handleSessionClick(item.sessionId)}
       style={{
         padding: 20,
         paddingLeft: 0,
@@ -64,6 +97,7 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
         )}
 
         <Text>{item.device}</Text>
+
         <Text type="secondary">Last active {item.updatedAt}</Text>
       </Flex>
     </Button>
@@ -87,8 +121,23 @@ export function SessionsList({ content }: { content: AllSessionsResponse }) {
           rowKey="key"
           itemRender={renderItem}
           items={items}
-        ></Listy>
+        />
       </Content>
+
+      {selectedSession && (
+        <Modal
+          open
+          title="Session details"
+          footer={null}
+          centered
+          onCancel={() => setSelectedSessionId(null)}
+        >
+          <RevokeSessionModal
+            session={selectedSession}
+            isCurrentSession={selectedSession.id === content.currentSession}
+          />
+        </Modal>
+      )}
     </>
   );
 }

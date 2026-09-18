@@ -89,24 +89,24 @@ export function RevokeSessionPage() {
               >
                 Log out
               </Button>
+              <Text>
+                If you don't recognize this device or didn't sign in from it,
+                log out to end this session and keep your account secure.
+              </Text>
             </ConfigProvider>
           ) : (
             <Tag
-              color="processing"
+              color="cyan"
               style={{
                 textAlign: "center",
                 padding: "4px 12px",
                 borderRadius: 16,
-                color: "rgb(73, 41, 255)",
+                color: "#15e495",
               }}
             >
               Current session
             </Tag>
           )}
-          <Text>
-            If you don't recognize this device or didn't sign in from it, log
-            out to end this session and keep your account secure.
-          </Text>
         </Flex>
       </Flex>
     </Content>
