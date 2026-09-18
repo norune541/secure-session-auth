@@ -11,6 +11,10 @@ export function LogoutModal({ isOpen, onClose }) {
       centered
       style={{ maxWidth: 400 }}
       footer={null}
+      width={{
+        xs: "90%",
+        sm: 416,
+      }}
     >
       <Flex vertical align="center">
         <Title level={3}>Log out</Title>
