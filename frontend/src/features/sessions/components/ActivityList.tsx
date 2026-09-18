@@ -1,9 +1,21 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Listy, Typography, Flex, Button, Layout, Divider } from "antd";
+
+import {
+  Listy,
+  Typography,
+  Flex,
+  Button,
+  Layout,
+  Divider,
+  Modal,
+  Grid,
+} from "antd";
 
 import { DeviceIcon } from "./DeviceIcon";
 import { formatActivityType } from "./formatActivityType";
 import { Sparkline } from "./Sparkline";
+import { ActivityDetails } from "./ActivityDetails";
 import type { AllActivityResponse } from "@repo/types";
 
 const { Content } = Layout;
@@ -11,6 +23,11 @@ const { Title, Text } = Typography;
 
 export function ActivityList({ content }: { content: AllActivityResponse }) {
   const navigate = useNavigate();
+  const { md } = Grid.useBreakpoint();
+
+  const [selectedActivityId, setSelectedActivityId] = useState<string | null>(
+    null,
+  );
 
   const formatter = new Intl.DateTimeFormat("en", {
     dateStyle: "medium",
@@ -30,13 +47,26 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
       device: a.session.device,
       createdAt: formatter.format(new Date(a.createdAt)),
       type: a.type,
+      activity: a,
     }));
+
+  const selectedActivity = items.find(
+    (item) => item.activityId === selectedActivityId,
+  )?.activity;
+
+  const handleActivityClick = (activityId: string) => {
+    if (md) {
+      setSelectedActivityId(activityId);
+    } else {
+      navigate(`/sessions/activity/${activityId}`);
+    }
+  };
 
   const renderItem = (item: (typeof items)[number]) => (
     <Button
       type="link"
       block
-      onClick={() => navigate(`/sessions/activity/${item.activityId}`)}
+      onClick={() => handleActivityClick(item.activityId)}
       style={{
         padding: 10,
         paddingLeft: 0,
@@ -50,8 +80,15 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
     >
       <DeviceIcon device={item.device} size={30} />
 
-      <Flex vertical style={{ marginLeft: 5, alignItems: "flex-start" }}>
+      <Flex
+        vertical
+        style={{
+          marginLeft: 5,
+          alignItems: "flex-start",
+        }}
+      >
         <Text>{formatActivityType(item.type)}</Text>
+
         <Flex vertical>
           <Text type="secondary">{item.device}</Text>
           <Text type="secondary">{item.createdAt}</Text>
@@ -66,9 +103,11 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
         <Title level={2} style={{ margin: 0 }}>
           Activities
         </Title>
+
         <Text type="secondary">
           View the history of sessions and actions associated with your account.
         </Text>
+
         <Divider />
       </div>
 
@@ -83,6 +122,18 @@ export function ActivityList({ content }: { content: AllActivityResponse }) {
           items={items}
         />
       </div>
+
+      {selectedActivity && (
+        <Modal
+          open
+          title="Activity details"
+          footer={null}
+          centered
+          onCancel={() => setSelectedActivityId(null)}
+        >
+          <ActivityDetails activity={selectedActivity} />
+        </Modal>
+      )}
     </Content>
   );
 }
