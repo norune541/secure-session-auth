@@ -6,16 +6,14 @@ ENV DATABASE_URL=${DATABASE_URL}
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-
 COPY backend/package.json ./backend/package.json
 COPY shared/types/package.json ./shared/types/package.json
 
 RUN npm ci
 
-COPY backend ./backend
+COPY shared/types ./shared/types
 
-COPY shared/types/src ./shared/types/src
-COPY shared/types/tsconfig.json ./shared/types/tsconfig.json
+COPY backend ./backend
 
 RUN npm run backend:build
 
@@ -27,9 +25,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json ./
-
 COPY backend/package.json ./backend/package.json
 COPY shared/types/package.json ./shared/types/package.json
+
+COPY --from=builder /app/shared/types/dist ./shared/types/dist
 
 RUN npm ci --omit=dev
 

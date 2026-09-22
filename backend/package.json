@@ -7,7 +7,7 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "build": "prisma generate && tsc && tsc-esm-fix && tsc -p tsconfig.seed.json",
+    "build": "prisma generate && tsc -b && tsc-esm-fix && tsc -p tsconfig.seed.json",
     "seed:dev": "tsx prisma/seed.ts",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
