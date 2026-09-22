@@ -1,8 +1,10 @@
 import ky from "ky";
 import type { RefreshSessionResponse } from "@repo/types";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const authApi = ky.create({
-  baseUrl: "/api/",
+  baseUrl: `${API_URL}/api/`,
   credentials: "include",
 });
 
@@ -10,7 +12,7 @@ let refreshPromise: Promise<string | null> | null = null;
 
 export const protectedApi = ky
   .create({
-    baseUrl: "/api/",
+    baseUrl: `${API_URL}/api/`,
     credentials: "include",
   })
   .extend({
@@ -23,6 +25,7 @@ export const protectedApi = ky
           );
         },
       ],
+
       afterResponse: [
         async ({ request, response }) => {
           if (response.status !== 401) {
@@ -30,6 +33,7 @@ export const protectedApi = ky
           }
 
           const serverResponse = await response.clone().json();
+
           if (serverResponse?.error?.type === "API_ERROR") {
             return;
           }
@@ -39,18 +43,21 @@ export const protectedApi = ky
               refreshPromise = (async () => {
                 try {
                   const { accessToken } = await authApi
-                    .post("/api/auth/sessions/refresh")
+                    .post("auth/sessions/refresh")
                     .json<RefreshSessionResponse>();
+
                   localStorage.setItem("accessToken", accessToken);
+
                   return accessToken;
                 } finally {
                   refreshPromise = null;
                 }
               })();
             }
+
             const accessToken = await refreshPromise;
 
-            const headers = new Headers(response.headers);
+            const headers = new Headers(request.headers);
             headers.set("Authorization", `Bearer ${accessToken}`);
 
             return ky.retry({
