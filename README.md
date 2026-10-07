@@ -57,25 +57,25 @@ Base URL:
 
 ### Authentication and sessions
 
-| Method | Endpoint | Auth | Description |
-| --- | --- | --- | --- |
-| POST | `/auth/sessions` | No | Login and create a session |
-| POST | `/auth/sessions/refresh` | Refresh cookie | Rotate refresh token and issue a new access token |
-| DELETE | `/auth/sessions` | Bearer | Logout the current session |
-| GET | `/auth/sessions` | Bearer | List active sessions for the current user |
-| GET | `/auth/sessions/:sessionId` | Bearer | Get one active session |
-| DELETE | `/auth/sessions/:sessionId` | Bearer | Revoke one session |
-| GET | `/auth/sessions/activity` | Bearer | List session activity |
-| GET | `/auth/sessions/activity/:activityId` | Bearer | Get one activity record |
+| Method | Endpoint                              | Auth           | Description                                       |
+| ------ | ------------------------------------- | -------------- | ------------------------------------------------- |
+| POST   | `/auth/sessions`                      | No             | Login and create a session                        |
+| POST   | `/auth/sessions/refresh`              | Refresh cookie | Rotate refresh token and issue a new access token |
+| DELETE | `/auth/sessions`                      | Bearer         | Logout the current session                        |
+| GET    | `/auth/sessions`                      | Bearer         | List active sessions for the current user         |
+| GET    | `/auth/sessions/:sessionId`           | Bearer         | Get one active session                            |
+| DELETE | `/auth/sessions/:sessionId`           | Bearer         | Revoke one session                                |
+| GET    | `/auth/sessions/activity`             | Bearer         | List session activity                             |
+| GET    | `/auth/sessions/activity/:activityId` | Bearer         | Get one activity record                           |
 
 ### Users
 
-| Method | Endpoint | Auth | Description |
-| --- | --- | --- | --- |
-| POST | `/users/` | No | Register a new user |
-| GET | `/users/` | Bearer | Get the current user's profile |
-| PATCH | `/users/` | Bearer | Update profile data |
-| PATCH | `/users/password` | Bearer | Change the current password |
+| Method | Endpoint          | Auth   | Description                    |
+| ------ | ----------------- | ------ | ------------------------------ |
+| POST   | `/users/`         | No     | Register a new user            |
+| GET    | `/users/`         | Bearer | Get the current user's profile |
+| PATCH  | `/users/`         | Bearer | Update profile data            |
+| PATCH  | `/users/password` | Bearer | Change the current password    |
 
 Protected endpoints use:
 
@@ -222,6 +222,7 @@ Create:
 
 - `backend/.env` for local development
 - `backend/.env.docker` for Docker Compose
+- `frontend/.env.production` for vite environment
 
 Use `backend/.env.example` as a template.
 
@@ -240,6 +241,12 @@ For Docker, the PostgreSQL connection must point to the Compose service:
 DATABASE_URL="postgresql://postgres:secure_password_123@postgres:5432/app_db?schema=public"
 ```
 
+for vite environment:
+
+```env
+VITE_ENV=development
+```
+
 Do not commit real secrets.
 
 ## Local development
@@ -248,6 +255,12 @@ Install dependencies from the repository root:
 
 ```bash
 npm install
+```
+
+Run migrations:
+
+```bash
+cd backend && npx prisma migrate dev
 ```
 
 The backend is started before the frontend because the backend workspace builds the shared TypeScript types first.
@@ -381,18 +394,18 @@ Input validation is handled with Zod, including authentication DTOs and runtime 
 
 From the repository root:
 
-| Command | Description |
-| --- | --- |
-| `npm run backend:dev` | Start backend in watch mode |
-| `npm run backend:build` | Build shared types and backend |
-| `npm run backend:start` | Start compiled backend |
-| `npm run frontend:dev` | Start Vite development server |
-| `npm run frontend:build` | Build frontend |
-| `npm run frontend:preview` | Preview production frontend build |
-| `npm run seed:dev` | Seed development database |
-| `npm run types` | Build shared TypeScript types |
-| `npm run lint` | Type-check and lint backend and frontend |
-| `npm run format` | Format the repository with Prettier |
+| Command                    | Description                              |
+| -------------------------- | ---------------------------------------- |
+| `npm run backend:dev`      | Start backend in watch mode              |
+| `npm run backend:build`    | Build shared types and backend           |
+| `npm run backend:start`    | Start compiled backend                   |
+| `npm run frontend:dev`     | Start Vite development server            |
+| `npm run frontend:build`   | Build frontend                           |
+| `npm run frontend:preview` | Preview production frontend build        |
+| `npm run seed:dev`         | Seed development database                |
+| `npm run types`            | Build shared TypeScript types            |
+| `npm run lint`             | Type-check and lint backend and frontend |
+| `npm run format`           | Format the repository with Prettier      |
 
 ## Status
 

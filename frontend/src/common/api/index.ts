@@ -1,9 +1,10 @@
 import ky from "ky";
 import type { RefreshSessionResponse } from "@repo/types";
 
-const API_URL = import.meta.env.VITE_ENV
-  ? "https://sessions-frontend-production.up.railway.app"
-  : "http://localhost:3000";
+const API_URL =
+  import.meta.env.VITE_ENV === "production"
+    ? "https://sessions-backend-production.up.railway.app"
+    : "http://localhost:3000";
 
 export const authApi = ky.create({
   baseUrl: `${API_URL}/api/`,
