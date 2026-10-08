@@ -66,7 +66,7 @@ export const signup = async (req: Request, res: Response<AuthResponse>) => {
 
   res.cookie("refreshToken", refreshToken, {
     maxAge: parsedBody.rememberMe ? 30 * 24 * 60 * 60 * 1000 : undefined,
-    sameSite: "strict",
+    sameSite: "none",
     httpOnly: true,
     secure: env.NODE_ENV === "production",
     path: "/",

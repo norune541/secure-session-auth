@@ -10,13 +10,37 @@ import { errorHandler } from "./common/middlewares/errorHandler";
 const app = express();
 const PORT = env.PORT;
 
-app.set("trust proxy", true)
+app.set("trust proxy", true);
 app.use(
   cors({
-    origin: env.NODE_ENV === "development" ? "http://localhost:5173" : "https://sessions-frontend-production.up.railway.app",
+    origin:
+      env.NODE_ENV === "development"
+        ? "http://localhost:5173"
+        : "https://sessions-frontend-production.up.railway.app",
     credentials: true,
   }),
 );
+
+const allowedOrigins = new Set([
+  "https://sessions-frontend-production.up.railway.app",
+]);
+
+app.use((req, res, next) => {
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+    const origin = req.get("origin");
+
+    if (origin && !allowedOrigins.has(origin)) {
+      return res.status(403).json({
+        error: {
+          type: "CSRF_ERROR",
+          message: "Invalid origin",
+        },
+      });
+    }
+  }
+
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
