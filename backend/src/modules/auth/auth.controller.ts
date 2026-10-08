@@ -21,6 +21,8 @@ import type {
   AllActivityResponse,
 } from "@repo/types";
 
+const isProduction = env.NODE_ENV === "production";
+
 export const login = async (req: Request, res: Response<AuthResponse>) => {
   const ua = UAParser(req.headers["user-agent"]);
 
@@ -39,9 +41,9 @@ export const login = async (req: Request, res: Response<AuthResponse>) => {
 
   res.cookie("refreshToken", refreshToken, {
     maxAge: parsedBody.rememberMe ? 30 * 24 * 60 * 60 * 1000 : undefined,
-    sameSite: "none",
+    sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
-    secure: env.NODE_ENV === "production",
+    secure: isProduction,
     path: "/",
   });
 
@@ -66,9 +68,9 @@ export const signup = async (req: Request, res: Response<AuthResponse>) => {
 
   res.cookie("refreshToken", refreshToken, {
     maxAge: parsedBody.rememberMe ? 30 * 24 * 60 * 60 * 1000 : undefined,
-    sameSite: "none",
+    sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
-    secure: env.NODE_ENV === "production",
+    secure: isProduction,
     path: "/",
   });
 
@@ -88,7 +90,7 @@ export const logout = async (req: Request, res: Response) => {
     path: "/",
     secure: env.NODE_ENV === "production",
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: isProduction ? "none" : "lax",
   });
   return res.sendStatus(204);
 };
@@ -105,9 +107,9 @@ export const handleRefresh = async (
 
   res.cookie("refreshToken", refreshToken, {
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: "none",
+    sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
-    secure: env.NODE_ENV === "production",
+    secure: isProduction,
     path: "/",
   });
 

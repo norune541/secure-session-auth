@@ -9,21 +9,26 @@ import { errorHandler } from "./common/middlewares/errorHandler";
 
 const app = express();
 const PORT = env.PORT;
+const allowedOrigins = new Set([
+  "https://sessions-frontend-production.up.railway.app",
+  "http://localhost:5173",
+]);
 
 app.set("trust proxy", true);
+
 app.use(
   cors({
-    origin:
-      env.NODE_ENV === "development"
-        ? "http://localhost:5173"
-        : "https://sessions-frontend-production.up.railway.app",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, origin);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   }),
 );
-
-const allowedOrigins = new Set([
-  "https://sessions-frontend-production.up.railway.app",
-]);
 
 app.use((req, res, next) => {
   if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
