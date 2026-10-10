@@ -3,7 +3,7 @@ import { Button, Layout, Skeleton } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useActivity } from "../hooks/useActivity";
-import { ActivityDetails } from "../components/ActivityDetails";
+import { ActivityDetails } from "../components/items/ActivityDetails";
 
 const { Content } = Layout;
 

@@ -2,7 +2,7 @@ import { Typography, Flex, Button, Tag, ConfigProvider } from "antd";
 import { ClockCircleOutlined } from "@ant-design/icons";
 
 import { DeviceIcon } from "./DeviceIcon";
-import { useRevokeSession } from "../hooks/useRevokeSession";
+import { useRevokeSession } from "../../hooks/useRevokeSession";
 
 import type { Session } from "@repo/types";
 

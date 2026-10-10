@@ -1,0 +1,44 @@
+.me-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.me-page__header {
+  margin-bottom: 24px;
+}
+
+.me-page__card {
+  border-radius: 12px;
+  padding-top: 10px;
+}
+
+.me-page__menu.ant-menu-horizontal .ant-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  margin-top: auto !important;
+  margin-bottom: auto !important;
+  padding-inline: 16px !important;
+}
+
+.me-page__content {
+  padding-top: 24px;
+}
+
+@media (max-width: 576px) {
+  .me-page {
+    padding-inline: 16px;
+  }
+
+  .me-page__card {
+    padding: 16px 12px 0;
+  }
+
+  .me-page__content {
+    padding: 20px 0 0;
+  }
+}
