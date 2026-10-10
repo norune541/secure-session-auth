@@ -4,7 +4,6 @@ import {
   Typography,
   Avatar,
   Grid,
-  Menu,
   Form,
   Input,
   Button,
@@ -16,191 +15,145 @@ import {
   PhoneOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import { useEffect } from "react";
 
-import { SecurityProfile } from "./SecurityProfile";
 import { useProfileNavigation } from "../hooks/useProfile";
-import type { MenuProps } from "antd";
+import "./ProfileComponent.css";
+
 import type { User } from "@repo/types";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const { Text, Title } = Typography;
 const { useBreakpoint } = Grid;
 
-type MenuItem = Required<MenuProps>["items"][number];
+interface ProfileComponentProps {
+  content: User;
+}
 
-export function ProfileComponent({ content }: { content: User }) {
+export function ProfileComponent({ content }: ProfileComponentProps) {
   const screens = useBreakpoint();
-  const isDesktop = screens.md;
+  const isDesktop = Boolean(screens.md);
 
-  const { current, onClick, form, loading, handleSubmit } =
-    useProfileNavigation();
-  const menuItems: MenuItem[] = [
-    {
-      label: "Profile",
-      key: "profile",
-    },
-    {
-      label: "Security",
-      key: "security",
-    },
-  ];
+  const { form, loading, handleSubmit } = useProfileNavigation();
+
+  useEffect(() => {
+    form.setFieldsValue({
+      firstName: content.firstName,
+      lastName: content.lastName,
+      phone: content.phone,
+      email: content.email,
+    });
+  }, [content, form]);
 
   return (
-    <Layout>
-      <Header
-        style={{
-          height: "fit-content",
-          padding: "0 28px",
-        }}
+    <Content className="profile-content">
+      <Flex align="center" gap={16} className="profile-content__user">
+        <Avatar size={72} icon={<UserOutlined />} />
+
+        <Flex vertical gap={4}>
+          <Text strong>
+            {content.firstName} {content.lastName}
+          </Text>
+          <Text type="secondary">{content.role}</Text>
+        </Flex>
+      </Flex>
+
+      <Title level={3} className="profile-content__title">
+        Personal Information
+      </Title>
+
+      <Form
+        requiredMark={false}
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        className="profile-content__form"
       >
-        <Menu
-          mode="horizontal"
-          onClick={onClick}
-          items={menuItems}
-          defaultSelectedKeys={["profile"]}
-          style={{
-            marginBottom: 20,
-          }}
-        />
+        <Flex vertical gap={20}>
+          <Flex gap={20} wrap={isDesktop ? "nowrap" : "wrap"}>
+            <Form.Item
+              name="firstName"
+              label="First name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your first name.",
+                },
+              ]}
+              className="profile-content__field"
+            >
+              <Input placeholder="First name" prefix={<UserOutlined />} />
+            </Form.Item>
 
-        <Flex gap="large" align="center">
-          {/* TODO: add profile picture */}
-          <Avatar size={72} icon={<UserOutlined />} />
+            <Form.Item
+              name="lastName"
+              label="Last name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your last name.",
+                },
+              ]}
+              className="profile-content__field"
+            >
+              <Input placeholder="Last name" prefix={<UserOutlined />} />
+            </Form.Item>
+          </Flex>
 
-          <Flex vertical gap="small">
-            <Text>
-              {content.firstName} {content.lastName}
-            </Text>
-            <Text>{content.role}</Text>
+          <Flex gap={20} wrap={isDesktop ? "nowrap" : "wrap"}>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your email.",
+                },
+                {
+                  type: "email",
+                  message: "Please enter a valid email.",
+                },
+              ]}
+              className="profile-content__field"
+            >
+              <Input placeholder="Email" prefix={<MailOutlined />} />
+            </Form.Item>
+
+            <Form.Item
+              name="phone"
+              label="Phone"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter your phone number.",
+                },
+              ]}
+              className="profile-content__field"
+            >
+              <Input placeholder="Phone" prefix={<PhoneOutlined />} />
+            </Form.Item>
+          </Flex>
+
+          <Form.Item
+            label="Profile picture"
+            className="profile-content__upload"
+          >
+            <Flex gap={16} align="center">
+              <Upload accept="image/*" maxCount={1} beforeUpload={() => false}>
+                <Button icon={<UploadOutlined />}>Upload picture</Button>
+              </Upload>
+
+              <Avatar size={48} icon={<UserOutlined />} />
+            </Flex>
+          </Form.Item>
+
+          <Flex justify="end">
+            <Button htmlType="submit" type="primary" loading={loading}>
+              Save changes
+            </Button>
           </Flex>
         </Flex>
-      </Header>
-
-      {current === "profile" && (
-        <Content
-          style={{
-            padding: "0 28px",
-            maxWidth: 1000,
-          }}
-        >
-          <Title level={3}>Personal Information</Title>
-
-          <Form
-            requiredMark={false}
-            form={form}
-            layout="vertical"
-            onFinish={handleSubmit}
-            style={{
-              border: "1px solid #F0F0F0",
-              borderRadius: 8,
-              padding: 20,
-            }}
-            initialValues={{
-              firstName: content.firstName,
-              lastName: content.lastName,
-              phone: content.phone,
-              email: content.email,
-            }}
-          >
-            <Flex vertical gap={20}>
-              <Flex gap={20} wrap={!isDesktop ? "wrap" : "nowrap"}>
-                <Form.Item
-                  name="firstName"
-                  label="First name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter your first name",
-                    },
-                  ]}
-                  style={{
-                    flex: 1,
-                    minWidth: isDesktop ? 0 : "100%",
-                    margin: 0,
-                  }}
-                >
-                  <Input placeholder="First name" prefix={<UserOutlined />} />
-                </Form.Item>
-
-                <Form.Item
-                  name="lastName"
-                  label="Last name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please enter your last name",
-                    },
-                  ]}
-                  style={{
-                    flex: 1,
-                    minWidth: isDesktop ? 0 : "100%",
-                    margin: 0,
-                  }}
-                >
-                  <Input placeholder="Last name" prefix={<UserOutlined />} />
-                </Form.Item>
-              </Flex>
-
-              <Flex gap={20} wrap={!isDesktop ? "wrap" : "nowrap"}>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  style={{
-                    flex: 1,
-                    minWidth: isDesktop ? 0 : "100%",
-                    margin: 0,
-                  }}
-                  rules={[
-                    { required: true, message: "Please write your email!" },
-                    { type: "email", message: "Please write correct email!" },
-                  ]}
-                >
-                  <Input placeholder="Email" prefix={<MailOutlined />} />
-                </Form.Item>
-
-                <Form.Item
-                  name="phone"
-                  label="Phone"
-                  style={{
-                    flex: 1,
-                    minWidth: isDesktop ? 0 : "100%",
-                    margin: 0,
-                  }}
-                  rules={[
-                    { required: true, message: "Please write your phone!" },
-                  ]}
-                >
-                  <Input placeholder="Phone" prefix={<PhoneOutlined />} />
-                </Form.Item>
-              </Flex>
-              <Form.Item
-                label="Profile picture"
-                style={{ margin: 0, marginTop: 12 }}
-              >
-                <Flex gap={20} align="center">
-                  <Upload>
-                    <Button icon={<UploadOutlined />}>Upload</Button>
-                  </Upload>
-
-                  <Avatar icon={<UserOutlined />} />
-                </Flex>
-              </Form.Item>
-
-              <Flex justify="start">
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  loading={loading}
-                  style={{ marginTop: 7 }}
-                >
-                  Save changes
-                </Button>
-              </Flex>
-            </Flex>
-          </Form>
-        </Content>
-      )}
-      {current === "security" && <SecurityProfile />}
-    </Layout>
+      </Form>
+    </Content>
   );
 }

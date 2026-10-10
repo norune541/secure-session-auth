@@ -1,0 +1,198 @@
+/* Sessions Page Component */
+.sessions-page {
+  box-sizing: border-box;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  padding: 10px 25px;
+}
+
+.sessions-page__title {
+  margin: 0 !important;
+  color: #111827;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Sessions List Component */
+.sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Sessions List Panel Container */
+.sessions-list__panel {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+/* Sessions Panel Header */
+.sessions-list__panel-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Sessions Panel Icon Wrapper */
+.sessions-list__panel-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #fff7ed;
+  border-radius: 8px;
+  color: #ea580c;
+  flex-shrink: 0;
+}
+
+.sessions-list__title {
+  margin: 0 !important;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sessions-list__description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Ant Design Table Customization */
+.sessions-list__table .ant-table-thead > tr,
+.sessions-list__table .ant-table-thead > tr > th {
+  background: #f9fafb !important;
+  color: #6b7280 !important;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 24px;
+  border-radius: 0 !important;
+}
+
+.sessions-list__table .ant-table-tbody > tr > td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* Sessions List Row Component */
+.sessions-list__row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sessions-list__row:hover > td {
+  background-color: #f9fafb !important;
+}
+
+/* Device Icon Component */
+.sessions-list__device-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+}
+
+/* Current Session Tag Component */
+.sessions-list__current-tag {
+  margin: 0;
+  color: #4f46e5;
+  background: #eef2ff;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+/* Status Tags */
+.sessions-list__status-tag {
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 8px;
+}
+
+.sessions-list__status-tag--active {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.sessions-list__status-tag--revoked {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+/* Device Name Component */
+.sessions-list__device-name {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Last Active Component */
+.sessions-list__last-active,
+.sessions-list__location {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Mobile Card List Styles */
+.sessions-mobile-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sessions-mobile-empty {
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.sessions-mobile-card {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sessions-mobile-card:last-child {
+  border-bottom: none;
+}
+
+.sessions-mobile-card:active {
+  background-color: #f9fafb;
+}
+
+/* Responsive Layout */
+@media (max-width: 767px) {
+  .sessions-page {
+    padding: 12px 8px;
+  }
+
+  .sessions-page__title {
+    font-size: 18px !important;
+  }
+
+  .sessions-list__panel-header {
+    padding: 14px 12px;
+    gap: 12px;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .sessions-mobile-card {
+    padding: 12px;
+  }
+}

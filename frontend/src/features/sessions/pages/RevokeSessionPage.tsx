@@ -9,7 +9,8 @@ import {
 } from "antd";
 import { ClockCircleOutlined, LeftOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
-import { DeviceIcon } from "../components/DeviceIcon";
+
+import { DeviceIcon } from "../components/items/DeviceIcon";
 import { useRevokeSession } from "../hooks/useRevokeSession";
 import { useSession } from "../hooks/useSession";
 

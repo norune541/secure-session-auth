@@ -1,17 +1,21 @@
 import { Menu } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 export function SessionsNavigation() {
+  const location = useLocation();
+
+  const selectedKey =
+    location.pathname === "/sessions/activity" ? "activity" : "sessions";
+
   return (
     <>
       <Menu
         mode="horizontal"
+        className="sessions-navigation"
         style={{
-          marginTop: 6,
-          marginLeft: 25,
-          marginBottom: 15,
+          margin: "30px 0 15px 25px",
         }}
-        defaultSelectedKeys={["sessions"]}
+        selectedKeys={[selectedKey]}
         items={[
           {
             label: <Link to="/sessions">Sessions</Link>,

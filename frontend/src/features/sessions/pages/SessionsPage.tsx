@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
 import { useSessions } from "../hooks/useSessions";
-import { SessionsList } from "../components/SessionsList";
+import { SessionsList } from "../components/lists/SessionsList";
 
 export function SessionsPage() {
   const { sessions, loading } = useSessions();

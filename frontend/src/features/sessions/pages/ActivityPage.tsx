@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
 import { useActivities } from "../hooks/useActivities";
-import { ActivityList } from "../components/ActivityList";
+import { ActivityList } from "../components/lists/ActivityList";
 
 export function ActivityPage() {
   const { activities, loading } = useActivities();
