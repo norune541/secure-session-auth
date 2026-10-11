@@ -12,7 +12,6 @@ COPY shared/types/package.json ./shared/types/package.json
 RUN npm ci
 
 COPY shared/types ./shared/types
-
 COPY backend ./backend
 
 RUN npm run backend:build
@@ -27,8 +26,6 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 COPY backend/package.json ./backend/package.json
 COPY shared/types/package.json ./shared/types/package.json
-
-COPY --from=builder /app/shared/types/dist ./shared/types/dist
 
 RUN npm ci --omit=dev
 
