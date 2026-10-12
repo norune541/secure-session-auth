@@ -12,7 +12,6 @@ COPY frontend ./frontend
 COPY shared/types/src ./shared/types/src
 COPY shared/types/tsconfig.json ./shared/types/tsconfig.json
 
-RUN npm run types
 RUN npm run frontend:build
 
 
