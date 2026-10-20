@@ -106,7 +106,7 @@ export const authenticateUser = async (
  */
 export const refreshSession = async (
   inputToken: string,
-): Promise<{ accessToken: string; refreshToken: string }> => {
+): Promise<{ accessToken: string; refreshToken: string; expiresAt: Date }> => {
   const sessionContext = await sessionService.validateRefreshToken(inputToken);
   if (!sessionContext) {
     throw new ApiError("Invalid or expired refresh token", 401);
@@ -126,5 +126,6 @@ export const refreshSession = async (
   return {
     accessToken,
     refreshToken,
+    expiresAt: sessionContext.expiresAt,
   };
 };

@@ -102,11 +102,12 @@ export const handleRefresh = async (
   const rawToken = req.cookies?.refreshToken;
 
   const parsedToken = TokenSchema.parse(rawToken);
-  const { accessToken, refreshToken } =
+
+  const { accessToken, refreshToken, expiresAt } =
     await authService.refreshSession(parsedToken);
 
   res.cookie("refreshToken", refreshToken, {
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    maxAge: expiresAt.getTime(),
     sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
     secure: isProduction,
