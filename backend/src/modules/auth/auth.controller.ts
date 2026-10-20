@@ -106,8 +106,10 @@ export const handleRefresh = async (
   const { accessToken, refreshToken, expiresAt } =
     await authService.refreshSession(parsedToken);
 
+  const remainingDuration = expiresAt.getTime() - Date.now()
+
   res.cookie("refreshToken", refreshToken, {
-    maxAge: expiresAt.getTime(),
+    maxAge: remainingDuration,
     sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
     secure: isProduction,
