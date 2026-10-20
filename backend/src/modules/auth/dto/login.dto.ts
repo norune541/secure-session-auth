@@ -33,13 +33,11 @@ export const LoginSchema = z
       }),
   })
   .refine(
-    ({ login }) =>
-      z.email().safeParse(login).success || phoneRegex.test(login),
+    ({ login }) => z.email().safeParse(login).success || phoneRegex.test(login),
     {
       error: "Login must be a valid email or phone number",
       path: ["login"],
     },
   );
-
 
 export type LoginDto = z.infer<typeof LoginSchema>;
