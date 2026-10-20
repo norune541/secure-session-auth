@@ -12,6 +12,7 @@ const PORT = env.PORT;
 const allowedOrigins = new Set([
   "https://sessions-frontend-production.up.railway.app",
   "http://localhost:5173",
+  "http://127.0.0.1:5173",
 ]);
 
 app.set("trust proxy", true);
