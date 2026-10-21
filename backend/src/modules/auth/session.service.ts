@@ -33,6 +33,7 @@ export const validateRefreshToken = async (inputToken: string) => {
           role: true,
         },
       },
+      expiresAt: true,
     },
   });
 
@@ -43,6 +44,7 @@ export const validateRefreshToken = async (inputToken: string) => {
   return {
     user: tokenData.user,
     id: tokenData.id,
+    expiresAt: tokenData.expiresAt,
   };
 };
 
